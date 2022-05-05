@@ -1,4 +1,5 @@
 import { AiFillGithub } from 'react-icons/ai'
+import { setGlobalState } from '../store'
 
 const Banner = () => {
   return (
@@ -25,8 +26,9 @@ const Banner = () => {
             duration-150 ease-in-out"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
+          onClick={() => setGlobalState('createModal', 'scale-100')}
         >
-          Learn more
+          Raise Proposal
         </button>
 
         <a href="#">

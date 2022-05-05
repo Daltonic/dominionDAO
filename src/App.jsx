@@ -1,4 +1,5 @@
 import Banner from './components/Banner'
+import CreateDAO from './components/CreateDAO'
 import Header from './components/Header'
 import Proposals from './components/Proposals'
 
@@ -8,6 +9,7 @@ const App = () => {
       <Header />
       <Banner />
       <Proposals />
+      <CreateDAO />
     </div>
   )
 }
