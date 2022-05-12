@@ -1,4 +1,5 @@
 import Identicon from 'react-identicons'
+import { Link } from 'react-router-dom'
 import { truncate } from '../store'
 
 const Proposals = () => {
@@ -17,7 +18,7 @@ const Proposals = () => {
   border border-blue-600`
 
   return (
-    <div className="flex flex-col p-8">
+    <div className="flex flex-col bg-white p-8">
       <div className="flex flex-row justify-center items-center" role="group">
         <button
           aria-current="page"
@@ -36,7 +37,7 @@ const Proposals = () => {
         <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
           <div className="overflow-hidden shadow-md rounded-md">
             <table className="min-w-full">
-              <thead className="bg-white border-b">
+              <thead className="border-b">
                 <tr>
                   <th
                     scope="col"
@@ -90,7 +91,7 @@ const Proposals = () => {
                         7 days
                       </td>
                       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        <button
+                        <Link to={'/proposal/' + i}
                           className="border-2 rounded-full px-6 py-2.5 border-blue-600
                           text-blue-600 font-medium text-xs leading-tight
                           uppercase hover:border-blue-700 focus:border-blue-700
@@ -98,7 +99,7 @@ const Proposals = () => {
                           transition duration-150 ease-in-out"
                         >
                           View
-                        </button>
+                        </Link>
                       </td>
                     </tr>
                   ))}
