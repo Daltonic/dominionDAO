@@ -16,6 +16,7 @@
     "react-identicons": "^1.2.5",
     "react-router-dom": "6",
     "react-scripts": "5.0.0",
+    "recharts": "^2.1.9",
     "web-vitals": "^2.1.4",
     "web3": "^1.7.1"
   },

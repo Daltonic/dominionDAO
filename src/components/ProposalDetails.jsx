@@ -1,23 +1,45 @@
 import { AiFillGithub } from 'react-icons/ai'
 import { FaGlobeAfrica } from 'react-icons/fa'
-import { setGlobalState } from '../store'
+import {
+  BarChart,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Legend,
+  Tooltip,
+} from 'recharts'
+
+const data = [
+  {
+    name: 'Voters',
+    Acceptees: 4000,
+    Rejectees: 2400,
+  },
+]
 
 const ProposalDetails = () => {
   return (
     <div className="p-8 rounded-lg text-gray-700 bg-white">
       <h2 className="font-semibold text-3xl mb-5">
-         Should donate 10% of revenue to charity.
+        Should donate 10% of revenue to charity.
       </h2>
-      <p>
-        This proposal currently have 10 votes and will expire in 7 days.
-      </p>
+      <p>This proposal currently have 10 votes and will expire in <span className="font-bold">7 days.</span></p>
       <hr className="my-6 border-gray-300" />
       <p>
         This is a build one out of many <span className="font-bold">DAO</span>{' '}
         applications scheduled to show up on this platform.
       </p>
-      <div className="flex flex-row justify-start items-center md:w-1/3 w-full mt-4">
-        {/* Place chart here */}
+      <div className="flex flex-row justify-start items-center w-full mt-4 overflow-auto">
+        <BarChart width={730} height={250} data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="Acceptees" fill="#2563eb" />
+          <Bar dataKey="Rejectees" fill="#dc2626" />
+        </BarChart>
       </div>
       <div
         className="flex flex-row justify-start items-center mt-4"
