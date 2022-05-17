@@ -66,7 +66,7 @@ const Header = () => {
                 focus:bg-blue-700 focus:shadow-lg focus:outline-none
                 focus:ring-0 active:bg-blue-800 active:shadow-lg
                 transition duration-150 ease-in-out dark:text-gray-300
-                dark:border dark:border-gray-300 dark:bg-transparent"
+                dark:border dark:border-gray-500 dark:bg-transparent"
               >
                 {truncate('0x66aEEbA2C8255967300bdba5ed1FCB4F907C8fcd', 4, 4, 11)}
               </button> */}
@@ -78,7 +78,7 @@ const Header = () => {
                 focus:bg-blue-700 focus:shadow-lg focus:outline-none
                 focus:ring-0 active:bg-blue-800 active:shadow-lg
                 transition duration-150 ease-in-out dark:text-gray-300
-                dark:border dark:border-gray-300 dark:bg-transparent"
+                dark:border dark:border-gray-500 dark:bg-transparent"
               >
                 Connect Wallet
               </button>

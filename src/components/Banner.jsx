@@ -2,7 +2,7 @@ import { setGlobalState } from '../store'
 
 const Banner = () => {
   return (
-    <div className="p-8 rounded-b-lg text-gray-700 bg-white dark:bg-[#212936] dark:text-gray-300">
+    <div className="p-8 rounded-b-lg">
       <h2 className="font-semibold text-3xl mb-5">
         3 Proposals Currenly Opened
       </h2>
@@ -22,9 +22,8 @@ const Banner = () => {
           text-base font-normaltext-gray-700
           bg-clip-padding border border-solid border-gray-300
           rounded transition ease-in-out m-0 shadow-md
-          focus:text-gray-500 focus:bg-white 
-          focus:outline-none dark:border-gray-500
-          dark:bg-transparent"
+          focus:text-gray-500 focus:outline-none
+          dark:border-gray-500 dark:bg-transparent"
           placeholder="e.g 2.5 Eth"
         />
       </div>
@@ -41,7 +40,7 @@ const Banner = () => {
             focus:shadow-lg focus:outline-none focus:ring-0
             active:bg-blue-800 active:shadow-lg transition
             duration-150 ease-in-out dark:text-gray-300
-            dark:border dark:border-gray-300 dark:bg-transparent"
+            dark:border dark:border-gray-500 dark:bg-transparent"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
         >
@@ -55,8 +54,8 @@ const Banner = () => {
             hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
             focus:shadow-lg focus:outline-none focus:ring-0
             active:bg-blue-800 active:shadow-lg transition
-            duration-150 ease-in-out dark:text-gray-300
-            dark:border dark:border-gray-300 dark:bg-transparent"
+            duration-150 ease-in-out
+            dark:border dark:border-gray-500 dark:bg-transparent"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
           onClick={() => setGlobalState('createModal', 'scale-100')}
