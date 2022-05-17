@@ -4,7 +4,7 @@ import Proposal from './views/Proposal'
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="proposal/:id" element={<Proposal />} />
