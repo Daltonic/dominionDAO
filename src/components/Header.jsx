@@ -3,7 +3,6 @@ import { FaUserSecret } from 'react-icons/fa'
 import { MdLightMode } from 'react-icons/md'
 import { FaMoon } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { truncate } from '../store'
 
 const Header = () => {
   const [theme, setTheme] = useState(localStorage.theme)
@@ -16,8 +15,7 @@ const Header = () => {
     root.classList.add(theme)
     localStorage.setItem('theme', theme)
   }, [themeColor, theme])
-  
-  
+
   const toggleLight = () => {
     const root = window.document.documentElement
     root.classList.remove(themeColor)
@@ -40,7 +38,9 @@ const Header = () => {
                 color={darken ? '#bcc0c7' : '#122643'}
                 size={25}
               />
-              <span className="invisible md:visible dark:text-gray-300">Dominion</span>
+              <span className="invisible md:visible dark:text-gray-300">
+                Dominion
+              </span>
             </Link>
 
             <div className="flex flex-row justify-center items-center space-x-5">

@@ -6,7 +6,11 @@ const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
   loading: { show: false, msg: '' },
   connectedAccount: '',
   contract: null,
+  theme: localStorage.theme
 })
+
+const themeColor = getGlobalState('theme') === 'dark' ? 'light' : 'dark'
+const darken = getGlobalState('theme') === 'dark' ? true : false
 
 const setAlert = (msg, color = 'green') => {
   setGlobalState('loading', false)
@@ -40,4 +44,6 @@ export {
   setAlert,
   setLoadingMsg,
   truncate,
+  darken,
+  themeColor
 }
