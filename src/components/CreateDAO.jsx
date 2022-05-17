@@ -25,26 +25,26 @@ const CreateDAO = () => {
   return (
     <div
       className={`fixed top-0 left-0 w-screen h-screen flex items-center
-      justify-center bg-[#122643] bg-opacity-50 transform z-50
+      justify-center bg-black bg-opacity-50 transform z-50
       transition-transform duration-300 ${createModal}`}
     >
-      <div className="bg-white shadow-xl shadow-[#122643] rounded-xl w-11/12 md:w-2/5 h-7/12 p-6">
+      <div className="bg-white dark:bg-[#212936] shadow-xl shadow-[#122643] dark:shadow-gray-500 rounded-xl w-11/12 md:w-2/5 h-7/12 p-6">
         <form className="flex flex-col">
           <div className="flex flex-row justify-between items-center">
-            <p className="font-semibold text-[#122643]">Raise Proposal</p>
+            <p className="font-semibold">Raise Proposal</p>
             <button
               type="button"
               onClick={closeModal}
               className="border-0 bg-transparent focus:outline-none"
             >
-              <FaTimes className="text-[#122643]" />
+              <FaTimes />
             </button>
           </div>
 
-          <div className="flex flex-row justify-between items-center border border-gray-800 rounded-xl mt-5">
+          <div className="flex flex-row justify-between items-center border border-gray-500 dark:border-gray-500 rounded-xl mt-5">
             <input
               className="block w-full text-sm
-              text-slate-500 bg-transparent border-0
+              bg-transparent border-0
               focus:outline-none focus:ring-0"
               type="text"
               name="title"
@@ -55,21 +55,21 @@ const CreateDAO = () => {
             />
           </div>
 
-          <div className="flex flex-row justify-between items-center border border-gray-800 rounded-xl mt-5">
+          <div className="flex flex-row justify-between items-center border border-gray-500 dark:border-gray-500 rounded-xl mt-5">
             <input
               type="date"
               className="block w-full text-sm resize-none
-              text-slate-500 bg-transparent border-0
+              bg-transparent border-0
               focus:outline-none focus:ring-0"
               placeholder="Select a date"
               data-mdb-toggle="datepicker"
             />
           </div>
 
-          <div className="flex flex-row justify-between items-center border border-gray-800 rounded-xl mt-5">
+          <div className="flex flex-row justify-between items-center border border-gray-500 dark:border-gray-500 rounded-xl mt-5">
             <textarea
               className="block w-full text-sm resize-none
-              text-slate-500 bg-transparent border-0
+              bg-transparent border-0
               focus:outline-none focus:ring-0 h-20"
               type="text"
               name="description"

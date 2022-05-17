@@ -2,7 +2,7 @@ import { setGlobalState } from '../store'
 
 const Banner = () => {
   return (
-    <div className="p-8 rounded-b-lg">
+    <div className="p-8">
       <h2 className="font-semibold text-3xl mb-5">
         3 Proposals Currenly Opened
       </h2>

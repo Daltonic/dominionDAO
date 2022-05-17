@@ -20,7 +20,7 @@ const data = [
 
 const ProposalDetails = () => {
   return (
-    <div className="p-8 rounded-lg text-gray-700 bg-white">
+    <div className="p-8">
       <h2 className="font-semibold text-3xl mb-5">
         Should donate 10% of revenue to charity.
       </h2>
@@ -48,12 +48,13 @@ const ProposalDetails = () => {
         <button
           type="button"
           className="inline-block px-6 py-2.5
-            bg-blue-600 text-white font-medium text-xs
-            leading-tight uppercase rounded-l-full shadow-md
-            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-            focus:shadow-lg focus:outline-none focus:ring-0
-            active:bg-blue-800 active:shadow-lg transition
-            duration-150 ease-in-out"
+          bg-blue-600 text-white font-medium text-xs
+          leading-tight uppercase rounded-l-full shadow-md
+          hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+          focus:shadow-lg focus:outline-none focus:ring-0
+          active:bg-blue-800 active:shadow-lg transition
+          duration-150 ease-in-out dark:text-gray-300
+          dark:border dark:border-gray-500 dark:bg-transparent"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
         >
@@ -62,12 +63,13 @@ const ProposalDetails = () => {
         <button
           type="button"
           className="inline-block px-6 py-2.5
-            bg-red-600 text-white font-medium text-xs
-            leading-tight uppercase rounded-r-full shadow-md
-            hover:bg-red-700 hover:shadow-lg focus:bg-red-700
-            focus:shadow-lg focus:outline-none focus:ring-0
-            active:bg-red-800 active:shadow-lg transition
-            duration-150 ease-in-out"
+          bg-blue-600 text-white font-medium text-xs
+          leading-tight uppercase rounded-r-full shadow-md
+          hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+          focus:shadow-lg focus:outline-none focus:ring-0
+          active:bg-blue-800 active:shadow-lg transition
+          duration-150 ease-in-out
+          dark:border dark:border-gray-500 dark:bg-transparent"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
         >

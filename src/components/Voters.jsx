@@ -18,7 +18,7 @@ const Voters = () => {
   border border-blue-600`
 
   return (
-    <div className="flex flex-col bg-white p-8">
+    <div className="flex flex-col p-8">
       <div className="flex flex-row justify-center items-center" role="group">
         <button
           aria-current="page"
@@ -37,23 +37,23 @@ const Voters = () => {
         <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
           <div className="overflow-hidden shadow-md rounded-md">
             <table className="min-w-full">
-              <thead className="border-b">
+              <thead className="border-b dark:border-gray-500">
                 <tr>
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-medium px-6 py-4 text-left"
                   >
                     Voter
                   </th>
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-medium px-6 py-4 text-left"
                   >
                     Voted
                   </th>
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-medium px-6 py-4 text-left"
                   >
                     Vote
                   </th>
@@ -65,9 +65,9 @@ const Voters = () => {
                   .map((item, i) => (
                     <tr
                       key={i}
-                      className="cursor-pointer bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+                      className="cursor-pointer border-b dark:border-gray-500 transition duration-300 ease-in-out"
                     >
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                         <div className="flex flex-row justify-start items-center space-x-3">
                           <Identicon
                             string={'Mark Zuck' + i}
@@ -77,10 +77,10 @@ const Voters = () => {
                           <span>{truncate('0x66aEEbA2C8255967300bdba5ed1FCB4F907C8fcd', 4, 4, 11)}</span>
                         </div>
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                         2 days ago
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                         <button 
                           className="border-2 rounded-full px-6 py-2.5 border-blue-600
                           text-blue-600 font-medium text-xs leading-tight
@@ -102,10 +102,11 @@ const Voters = () => {
         <button
           aria-current="page"
           className="rounded-full px-6 py-2.5 bg-blue-600
-            text-white font-medium text-xs leading-tight
+            font-medium text-xs leading-tight
             uppercase hover:bg-blue-700 focus:bg-blue-700
             focus:outline-none focus:ring-0 active:bg-blue-800
-            transition duration-150 ease-in-out"
+            transition duration-150 ease-in-out dark:text-gray-300
+            dark:border dark:border-gray-500 dark:bg-transparent"
         >
           Load More
         </button>

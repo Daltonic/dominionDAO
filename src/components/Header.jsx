@@ -33,11 +33,7 @@ const Header = () => {
               to={'/'}
               className="flex flex-row justify-start items-center space-x-3"
             >
-              <FaUserSecret
-                className="cursor-pointer"
-                color={darken ? '#bcc0c7' : '#122643'}
-                size={25}
-              />
+              <FaUserSecret className="cursor-pointer" size={25} />
               <span className="invisible md:visible dark:text-gray-300">
                 Dominion
               </span>
@@ -47,14 +43,12 @@ const Header = () => {
               {darken ? (
                 <MdLightMode
                   className="cursor-pointer"
-                  color={darken ? '#bcc0c7' : '#122643'}
                   size={25}
                   onClick={toggleLight}
                 />
               ) : (
                 <FaMoon
                   className="cursor-pointer"
-                  color={darken ? '#bcc0c7' : '#122643'}
                   size={25}
                   onClick={toggleLight}
                 />
