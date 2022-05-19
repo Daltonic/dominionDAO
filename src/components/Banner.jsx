@@ -1,6 +1,13 @@
-import { setGlobalState } from '../store'
+import { setGlobalState, useGlobalState } from '../store'
 
 const Banner = () => {
+  const [isStakeholder] = useGlobalState('isStakeholder')
+
+  const onPropose = () => {
+    if(!isStakeholder) return
+    setGlobalState('createModal', 'scale-100')
+  }
+  
   return (
     <div className="p-8">
       <h2 className="font-semibold text-3xl mb-5">
@@ -58,7 +65,7 @@ const Banner = () => {
             dark:border dark:border-blue-500 dark:bg-transparent"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
-          onClick={() => setGlobalState('createModal', 'scale-100')}
+          onClick={onPropose}
         >
           Propose
         </button>

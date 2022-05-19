@@ -56,17 +56,6 @@ const CreateDAO = () => {
           </div>
 
           <div className="flex flex-row justify-between items-center border border-gray-500 dark:border-gray-500 rounded-xl mt-5">
-            <input
-              type="date"
-              className="block w-full text-sm resize-none
-              bg-transparent border-0
-              focus:outline-none focus:ring-0"
-              placeholder="Select a date"
-              data-mdb-toggle="datepicker"
-            />
-          </div>
-
-          <div className="flex flex-row justify-between items-center border border-gray-500 dark:border-gray-500 rounded-xl mt-5">
             <textarea
               className="block w-full text-sm resize-none
               bg-transparent border-0
@@ -87,7 +76,7 @@ const CreateDAO = () => {
               focus:outline-none focus:ring-0 active:bg-blue-800
               transition duration-150 ease-in-out mt-5"
           >
-            Submit
+            Raise Proposal
           </button>
         </form>
       </div>

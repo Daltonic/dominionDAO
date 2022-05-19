@@ -38,11 +38,12 @@ const loadWeb3 = async () => {
 
     if (networkData) {
       const contract = new web3.eth.Contract(DominionDAO.abi, networkData.address)
-      // const nfts = await contract.methods.getAllNFTs().call()
+      const isStakeholder = await contract.methods.isStakeholder().call()
 
-      // setGlobalState('nfts', structuredNfts(nfts))
+      setGlobalState('isStakeholder', isStakeholder)
       setGlobalState('contract', contract)
       console.log(contract)
+      console.log(isStakeholder)
     } else {
       window.alert('DominionDAO contract not deployed to detected network.')
     }

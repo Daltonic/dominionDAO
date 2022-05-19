@@ -6,6 +6,7 @@ const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
   loading: { show: false, msg: '' },
   connectedAccount: '',
   contract: null,
+  isStakeholder: false
 })
 
 const setAlert = (msg, color = 'green') => {
