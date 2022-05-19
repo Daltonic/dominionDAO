@@ -4,11 +4,18 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract DominonDAO is ReentrancyGuard, AccessControl {
-    bytes32 public constant CONTRIBUTOR_ROLE = keccak256("CONTRIBUTOR");
-    bytes32 public constant STAKEHOLDER_ROLE = keccak256("STAKEHOLDER");
-    uint32 constant minVoteDuration = 1 weeks;
+contract DominionDAO is ReentrancyGuard, AccessControl {
+    bytes32 private immutable CONTRIBUTOR_ROLE = keccak256("CONTRIBUTOR");
+    bytes32 private immutable STAKEHOLDER_ROLE = keccak256("STAKEHOLDER");
+    uint32 immutable MIN_VOTE_DURATION = 30 minutes;
+    // uint32 immutable MIN_VOTE_DURATION = 1 weeks;
     uint256 totalProposals;
+    uint256 public daoBalance;
+
+    mapping(uint256 => ProposalStruct) private raisedProposals;
+    mapping(address => uint256[]) private stakeholderVotes;
+    mapping(address => uint256) private contributors;
+    mapping(address => uint256) private stakeholders;
 
     struct ProposalStruct {
         uint256 id;
@@ -24,11 +31,6 @@ contract DominonDAO is ReentrancyGuard, AccessControl {
         address proposer;
         address executor;
     }
-
-    mapping(uint256 => ProposalStruct) private raisedProposals;
-    mapping(address => uint256[]) private stakeholderVotes;
-    mapping(address => uint256) private contributors;
-    mapping(address => uint256) private stakeholders;
 
     event Action(
         address indexed initiator,
@@ -65,7 +67,7 @@ contract DominonDAO is ReentrancyGuard, AccessControl {
         proposal.description = description;
         proposal.beneficiary = payable(beneficiary);
         proposal.amount = amount;
-        proposal.duration = block.timestamp + minVoteDuration;
+        proposal.duration = block.timestamp + MIN_VOTE_DURATION;
 
         emit Action(
             msg.sender,
@@ -117,6 +119,7 @@ contract DominonDAO is ReentrancyGuard, AccessControl {
     function payBeneficiary(uint256 proposalId)
         external
         stakeholderOnly("Unauthorized: Stakeholders only")
+        returns (bool)
     {
         ProposalStruct storage proposal = raisedProposals[proposalId];
 
@@ -125,8 +128,11 @@ contract DominonDAO is ReentrancyGuard, AccessControl {
         if (proposal.upvotes <= proposal.downvotes)
             revert("Insufficient votes");
 
+        payTo(proposal.beneficiary, proposal.amount);
+
         proposal.paid = true;
         proposal.executor = msg.sender;
+        daoBalance -= proposal.amount;
 
         emit Action(
             msg.sender,
@@ -136,10 +142,10 @@ contract DominonDAO is ReentrancyGuard, AccessControl {
             proposal.amount
         );
 
-        return proposal.beneficiary.transfer(proposal.amount);
+        return true;
     }
 
-    function becomeStakeholder() payable external {
+    function contribute() payable external {
 
         if (!hasRole(STAKEHOLDER_ROLE, msg.sender)) {
             uint256 totalContribution =
@@ -158,6 +164,15 @@ contract DominonDAO is ReentrancyGuard, AccessControl {
             contributors[msg.sender] += msg.value;
             stakeholders[msg.sender] += msg.value;
         }
+        daoBalance += msg.value;
+
+        emit Action(
+            msg.sender,
+            STAKEHOLDER_ROLE,
+            "CONTRIBUTION RECEIVED",
+            address(this),
+            msg.value
+        );
     }
 
     function getProposals()
@@ -213,5 +228,14 @@ contract DominonDAO is ReentrancyGuard, AccessControl {
 
     function isContributor() public view returns (bool) {
         return contributors[msg.sender] > 0;
+    }
+
+    function payTo(
+        address to, 
+        uint256 amount
+    ) internal returns (bool) {
+        (bool success,) = payable(to).call{value: amount}("");
+        require(success, "Payment failed");
+        return true;
     }
 }

@@ -1,5 +1,6 @@
-// require('babel-register')
-// require('babel-polyfill')
+require('babel-register')
+require('babel-polyfill')
+
 require('dotenv').config()
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 
@@ -23,6 +24,7 @@ module.exports = {
   },
   contracts_directory: './src/contracts/',
   contracts_build_directory: './src/abis/',
+  migrations_directory: "./migrations",
   // Configure your compilers
   compilers: {
     solc: {
