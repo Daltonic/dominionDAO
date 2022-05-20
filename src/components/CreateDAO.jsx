@@ -1,15 +1,24 @@
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
+import { raiseProposal } from '../Dominion'
 import { setGlobalState, useGlobalState } from '../store'
 
 const CreateDAO = () => {
   const [createModal] = useGlobalState('createModal')
   const [title, setTitle] = useState('')
+  const [amount, setAmount] = useState('')
+  const [beneficiary, setBeneficiary] = useState('')
   const [description, setDescription] = useState('')
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    if (!title || !description) return
+    if (!title || !description || !beneficiary || !amount) return
+    raiseProposal({ title, description, beneficiary, amount }).then((res) => {
+      if (res) {
+        console.log(res)
+        closeModal()
+      }
+    })
   }
 
   const closeModal = () => {
@@ -19,6 +28,8 @@ const CreateDAO = () => {
 
   const resetForm = () => {
     setTitle('')
+    setAmount('')
+    setBeneficiary('')
     setDescription('')
   }
 
@@ -56,6 +67,34 @@ const CreateDAO = () => {
           </div>
 
           <div className="flex flex-row justify-between items-center border border-gray-500 dark:border-gray-500 rounded-xl mt-5">
+            <input
+              className="block w-full text-sm
+              bg-transparent border-0
+              focus:outline-none focus:ring-0"
+              type="text"
+              name="amount"
+              placeholder="e.g 2.5 Eth"
+              onChange={(e) => setAmount(e.target.value)}
+              value={amount}
+              required
+            />
+          </div>
+
+          <div className="flex flex-row justify-between items-center border border-gray-500 dark:border-gray-500 rounded-xl mt-5">
+            <input
+              className="block w-full text-sm
+              bg-transparent border-0
+              focus:outline-none focus:ring-0"
+              type="text"
+              name="beneficiary"
+              placeholder="Beneficiary Address"
+              onChange={(e) => setBeneficiary(e.target.value)}
+              value={beneficiary}
+              required
+            />
+          </div>
+
+          <div className="flex flex-row justify-between items-center border border-gray-500 dark:border-gray-500 rounded-xl mt-5">
             <textarea
               className="block w-full text-sm resize-none
               bg-transparent border-0
@@ -75,8 +114,9 @@ const CreateDAO = () => {
               uppercase hover:bg-blue-700 focus:bg-blue-700
               focus:outline-none focus:ring-0 active:bg-blue-800
               transition duration-150 ease-in-out mt-5"
+            onClick={handleSubmit}
           >
-            Raise Proposal
+            Submit Proposal
           </button>
         </form>
       </div>

@@ -1,13 +1,23 @@
+import { useState } from 'react'
 import { setGlobalState, useGlobalState } from '../store'
+import { performContribute } from '../Dominion'
 
 const Banner = () => {
   const [isStakeholder] = useGlobalState('isStakeholder')
+  const [amount, setAmount] = useState('')
 
   const onPropose = () => {
     if(!isStakeholder) return
     setGlobalState('createModal', 'scale-100')
   }
-  
+
+  const onContribute = () => {
+    if(!!!amount || amount == '') return
+    performContribute(amount).then(res => {
+      if(res) console.log(res)
+    })
+  }
+
   return (
     <div className="p-8">
       <h2 className="font-semibold text-3xl mb-5">
@@ -32,6 +42,9 @@ const Banner = () => {
           focus:text-gray-500 focus:outline-none
           dark:border-gray-500 dark:bg-transparent"
           placeholder="e.g 2.5 Eth"
+          onChange={(e) => setAmount(e.target.value)}
+          value={amount}
+          required
         />
       </div>
       <div
@@ -50,8 +63,9 @@ const Banner = () => {
             dark:border dark:border-blue-500 dark:bg-transparent"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
+          onClick={onContribute}
         >
-          Donate
+          Contribute
         </button>
         <button
           type="button"

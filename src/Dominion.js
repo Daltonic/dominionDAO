@@ -20,13 +20,42 @@ const connectWallet = async () => {
   }
 }
 
+const raiseProposal = async ({title, description, beneficiary, amount}) => {
+  try {
+    amount = window.web3.utils.toWei(amount.toString(), 'ether')
+    const contract = getGlobalState('contract')
+    const account = getGlobalState('connectedAccount')
+
+    await contract.methods
+      .createProposal(title, description, beneficiary, amount)
+      .send({ from: account })
+
+    return true
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const performContribute = async (amount) => {
+  try {
+    amount = window.web3.utils.toWei(amount.toString(), 'ether')
+    const contract = getGlobalState('contract')
+    const account = getGlobalState('connectedAccount')
+
+    await contract.methods.contribute().send({ from: account, value: amount })
+
+    return true
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 const loadWeb3 = async () => {
   try {
     if (!ethereum) return alert('Please install Metamask')
 
     window.web3 = new Web3(ethereum)
-    await ethereum.enable()
-
+    await ethereum.request({ method: 'eth_requestAccounts' })
     window.web3 = new Web3(window.web3.currentProvider)
 
     const web3 = window.web3
@@ -37,13 +66,14 @@ const loadWeb3 = async () => {
     const networkData = DominionDAO.networks[networkId]
 
     if (networkData) {
-      const contract = new web3.eth.Contract(DominionDAO.abi, networkData.address)
-      const isStakeholder = await contract.methods.isStakeholder().call()
+      const contract = new web3.eth.Contract(
+        DominionDAO.abi,
+        networkData.address
+      )
+      const isStakeholder = await contract.methods.isStakeholder().call({ from: accounts[0] })
 
       setGlobalState('isStakeholder', isStakeholder)
       setGlobalState('contract', contract)
-      console.log(contract)
-      console.log(isStakeholder)
     } else {
       window.alert('DominionDAO contract not deployed to detected network.')
     }
@@ -67,4 +97,4 @@ const structuredNfts = (nfts) => {
     .reverse()
 }
 
-export { loadWeb3, connectWallet }
+export { loadWeb3, connectWallet, performContribute, raiseProposal }
