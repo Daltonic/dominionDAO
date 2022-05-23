@@ -14,7 +14,7 @@ const Banner = () => {
   const onContribute = () => {
     if(!!!amount || amount == '') return
     performContribute(amount).then(res => {
-      if(res) console.log(res)
+      if(res) window.location.reload()
     })
   }
 

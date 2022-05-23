@@ -8,6 +8,7 @@ const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
   contract: null,
   isStakeholder: false,
   totalProposals: 0,
+  proposals: []
 })
 
 const setAlert = (msg, color = 'green') => {

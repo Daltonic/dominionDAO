@@ -17,6 +17,7 @@ const CreateDAO = () => {
       if (res) {
         console.log(res)
         closeModal()
+        window.location.reload()
       }
     })
   }

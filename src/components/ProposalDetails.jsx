@@ -1,5 +1,6 @@
-import { AiFillGithub } from 'react-icons/ai'
-import { FaGlobeAfrica } from 'react-icons/fa'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import {
   BarChart,
   Bar,
@@ -9,27 +10,48 @@ import {
   Legend,
   Tooltip,
 } from 'recharts'
-
-const data = [
-  {
-    name: 'Voters',
-    Acceptees: 4000,
-    Rejectees: 2400,
-  },
-]
+import { retrieveProposal } from '../Dominion'
 
 const ProposalDetails = () => {
+  const { id } = useParams()
+  const [proposal, setProposal] = useState(null)
+
+  const [data, setData] = useState([])
+
+  useEffect(() => getProposal(), [id])
+
+  const getProposal = () => {
+    retrieveProposal(id).then((res) => {
+      setProposal(res)
+      setData([
+        {
+          name: 'Voters',
+          Acceptees: proposal.upvotes,
+          Rejectees: proposal.downvotes,
+        },
+      ])
+    })
+  }
+
+  const daysRemaining = (days) => {
+    const todaysdate = moment()
+    days = Number((days + '000').slice(0))
+    days = moment(days).format('YYYY-MM-DD')
+    days = moment(days)
+    days = days.diff(todaysdate, 'days')
+    return days == 1 ? '1 day' : days + ' days'
+  }
+
   return (
     <div className="p-8">
-      <h2 className="font-semibold text-3xl mb-5">
-        Should donate 10% of revenue to charity.
-      </h2>
-      <p>This proposal currently have 10 votes and will expire in <span className="font-bold">7 days.</span></p>
-      <hr className="my-6 border-gray-300" />
+      <h2 className="font-semibold text-3xl mb-5">{proposal?.title}</h2>
       <p>
-        This is a build one out of many <span className="font-bold">DAO</span>{' '}
-        applications scheduled to show up on this platform.
+        This proposal currently have {proposal?.upvotes + proposal?.downvotes}{' '}
+        votes and will expire in{' '}
+        <span className="font-bold">{daysRemaining(proposal?.duration)}</span>
       </p>
+      <hr className="my-6 border-gray-300" />
+      <p>{proposal?.description}</p>
       <div className="flex flex-row justify-start items-center w-full mt-4 overflow-auto">
         <BarChart width={730} height={250} data={data}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -75,14 +97,6 @@ const ProposalDetails = () => {
         >
           Reject
         </button>
-
-        <a className="ml-6" href="#">
-          <AiFillGithub size={25} className="cursor-pointer" color="#122643" />
-        </a>
-
-        <a className="ml-6" href="#">
-          <FaGlobeAfrica size={25} className="cursor-pointer" color="#122643" />
-        </a>
       </div>
     </div>
   )

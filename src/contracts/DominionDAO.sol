@@ -7,8 +7,8 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 contract DominionDAO is ReentrancyGuard, AccessControl {
     bytes32 private immutable CONTRIBUTOR_ROLE = keccak256("CONTRIBUTOR");
     bytes32 private immutable STAKEHOLDER_ROLE = keccak256("STAKEHOLDER");
-    uint32 immutable MIN_VOTE_DURATION = 30 minutes;
-    // uint32 immutable MIN_VOTE_DURATION = 1 weeks;
+    // uint32 immutable MIN_VOTE_DURATION = 30 minutes;
+    uint32 immutable MIN_VOTE_DURATION = 1 weeks;
     uint256 totalProposals;
     uint256 public daoBalance;
 

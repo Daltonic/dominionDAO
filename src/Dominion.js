@@ -20,7 +20,7 @@ const connectWallet = async () => {
   }
 }
 
-const raiseProposal = async ({title, description, beneficiary, amount}) => {
+const raiseProposal = async ({ title, description, beneficiary, amount }) => {
   try {
     amount = window.web3.utils.toWei(amount.toString(), 'ether')
     const contract = getGlobalState('contract')
@@ -50,6 +50,30 @@ const performContribute = async (amount) => {
   }
 }
 
+const retrieveProposal = async (proposalId) => {
+  const web3 = window.web3
+  try {
+    const contract = getGlobalState('contract')
+    const proposal = await contract.methods.getProposal(proposalId).call()
+    return {
+      id: proposal.id,
+      amount: web3.utils.fromWei(proposal.amount),
+      title: proposal.title,
+      description: proposal.description,
+      paid: proposal.paid,
+      passed: proposal.passed,
+      proposer: proposal.proposer,
+      upvotes: Number(proposal.upvotes),
+      downvotes: Number(proposal.downvotes),
+      beneficiary: proposal.beneficiary,
+      executor: proposal.executor,
+      duration: proposal.duration,
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const loadWeb3 = async () => {
   try {
     if (!ethereum) return alert('Please install Metamask')
@@ -70,9 +94,13 @@ const loadWeb3 = async () => {
         DominionDAO.abi,
         networkData.address
       )
-      const isStakeholder = await contract.methods.isStakeholder().call({ from: accounts[0] })
+      const isStakeholder = await contract.methods
+        .isStakeholder()
+        .call({ from: accounts[0] })
+      const proposals = await contract.methods.getProposals().call()
 
       setGlobalState('isStakeholder', isStakeholder)
+      setGlobalState('proposals', structuredProposals(proposals))
       setGlobalState('contract', contract)
     } else {
       window.alert('DominionDAO contract not deployed to detected network.')
@@ -82,19 +110,30 @@ const loadWeb3 = async () => {
   }
 }
 
-const structuredNfts = (nfts) => {
+const structuredProposals = (proposals) => {
   const web3 = window.web3
-  return nfts
-    .map((nft) => ({
-      id: nft.id,
-      to: nft.to,
-      from: nft.from,
-      cost: web3.utils.fromWei(nft.cost),
-      title: nft.title,
-      description: nft.description,
-      timestamp: nft.timestamp,
+  return proposals
+    .map((proposal) => ({
+      id: proposal.id,
+      amount: web3.utils.fromWei(proposal.amount),
+      title: proposal.title,
+      description: proposal.description,
+      paid: proposal.paid,
+      passed: proposal.passed,
+      proposer: proposal.proposer,
+      upvotes: Number(proposal.upvotes),
+      downvotes: Number(proposal.downvotes),
+      beneficiary: proposal.beneficiary,
+      executor: proposal.executor,
+      duration: proposal.duration,
     }))
     .reverse()
 }
 
-export { loadWeb3, connectWallet, performContribute, raiseProposal }
+export {
+  loadWeb3,
+  connectWallet,
+  performContribute,
+  raiseProposal,
+  retrieveProposal,
+}
