@@ -7,13 +7,13 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 contract DominionDAO is ReentrancyGuard, AccessControl {
     bytes32 private immutable CONTRIBUTOR_ROLE = keccak256("CONTRIBUTOR");
     bytes32 private immutable STAKEHOLDER_ROLE = keccak256("STAKEHOLDER");
-    // uint32 immutable MIN_VOTE_DURATION = 30 minutes;
     uint32 immutable MIN_VOTE_DURATION = 1 weeks;
     uint256 totalProposals;
     uint256 public daoBalance;
 
     mapping(uint256 => ProposalStruct) private raisedProposals;
     mapping(address => uint256[]) private stakeholderVotes;
+    mapping(uint256 => VotedStruct[]) private votedOn;
     mapping(address => uint256) private contributors;
     mapping(address => uint256) private stakeholders;
 
@@ -30,6 +30,12 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
         address payable beneficiary;
         address proposer;
         address executor;
+    }
+
+    struct VotedStruct {
+        address voter;
+        uint256 timestamp;
+        bool choosen;
     }
 
     event Action(
@@ -78,7 +84,7 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
         );
     }
 
-    function performVote(uint256 proposalId, bool supported)
+    function performVote(uint256 proposalId, bool choosen)
         external
         stakeholderOnly("Unauthorized: Stakeholders only")
     {
@@ -86,10 +92,18 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
 
         handleVoting(proposal);
 
-        if (supported) proposal.upvotes++;
+        if (choosen) proposal.upvotes++;
         else proposal.downvotes++;
 
         stakeholderVotes[msg.sender].push(proposal.id);
+
+        votedOn[proposal.id].push(
+            VotedStruct(
+                msg.sender,
+                block.timestamp,
+                choosen
+            )
+        );
 
         emit Action(
             msg.sender,
@@ -165,6 +179,7 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
             contributors[msg.sender] += msg.value;
             stakeholders[msg.sender] += msg.value;
         }
+        
         daoBalance += msg.value;
 
         emit Action(
@@ -189,15 +204,23 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
     }
 
     function getProposal(uint256 proposalId)
-        public
+        external
         view
         returns (ProposalStruct memory)
     {
         return raisedProposals[proposalId];
     }
+    
+    function getVotesOf(uint256 proposalId)
+        external
+        view
+        returns (VotedStruct[] memory)
+    {
+        return votedOn[proposalId];
+    }
 
     function getStakeholderVotes()
-        public
+        external
         view
         stakeholderOnly("Unauthorized: not a stakeholder")
         returns (uint256[] memory)
@@ -206,7 +229,7 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
     }
 
     function getStakeholderBalance()
-        public
+        external
         view
         stakeholderOnly("Unauthorized: not a stakeholder")
         returns (uint256)
@@ -214,12 +237,12 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
         return stakeholders[msg.sender];
     }
 
-    function isStakeholder() public view returns (bool) {
+    function isStakeholder() external view returns (bool) {
         return stakeholders[msg.sender] > 0;
     }
 
     function getContributorBalance()
-        public
+        external
         view
         contributorOnly("Denied: User is not a contributor")
         returns (uint256)
@@ -227,7 +250,7 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
         return contributors[msg.sender];
     }
 
-    function isContributor() public view returns (bool) {
+    function isContributor() external view returns (bool) {
         return contributors[msg.sender] > 0;
     }
 

@@ -50,11 +50,12 @@ const performContribute = async (amount) => {
   }
 }
 
-const retrieveProposal = async (proposalId) => {
+const retrieveProposal = async (id) => {
   const web3 = window.web3
   try {
     const contract = getGlobalState('contract')
-    const proposal = await contract.methods.getProposal(proposalId).call()
+    const proposal = await contract.methods.getProposal(id).call().wait()
+    console.log(proposal)
     return {
       id: proposal.id,
       amount: web3.utils.fromWei(proposal.amount),
@@ -69,6 +70,38 @@ const retrieveProposal = async (proposalId) => {
       executor: proposal.executor,
       duration: proposal.duration,
     }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getProposal = async (id) => {
+  try {
+    const proposals = getGlobalState('proposals')
+    return proposals.find((proposal) => proposal.id == id)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const voteOnProposal = async (proposalId, supported) => {
+  try {
+    const contract = getGlobalState('contract')
+    const account = getGlobalState('connectedAccount')
+    await contract.methods
+      .performVote(proposalId, supported)
+      .send({ from: account })
+    return true
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const listVoters = async (id) => {
+  try {
+    const contract = getGlobalState('contract')
+    const votes = await contract.methods.getVotesOf(id).call()
+    return votes
   } catch (error) {
     console.log(error)
   }
@@ -105,8 +138,10 @@ const loadWeb3 = async () => {
     } else {
       window.alert('DominionDAO contract not deployed to detected network.')
     }
+    return true
   } catch (error) {
     alert('Please connect your metamask wallet!')
+    return false
   }
 }
 
@@ -136,4 +171,7 @@ export {
   performContribute,
   raiseProposal,
   retrieveProposal,
+  voteOnProposal,
+  getProposal,
+  listVoters
 }

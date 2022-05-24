@@ -1,7 +1,6 @@
 import Identicon from 'react-identicons'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
-import { truncate, useGlobalState } from '../store'
+import { truncate, useGlobalState, daysRemaining } from '../store'
 
 const Proposals = () => {
   const [proposals] = useGlobalState('proposals')
@@ -19,15 +18,6 @@ const Proposals = () => {
   focus:outline-none focus:ring-0 active:bg-blue-800
   transition duration-150 ease-in-out overflow-hidden
   border border-blue-600`
-
-  const daysRemaining = (days) => {
-    const todaysdate = moment()
-    days = Number((days + '000').slice(0))
-    days = moment(days).format('YYYY-MM-DD')
-    days = moment(days)
-    days = days.diff(todaysdate, 'days')
-    return days == 1 ? '1 day' : days + ' days'
-  }
 
   return (
     <div className="flex flex-col p-8">

@@ -10,7 +10,7 @@ import {
   Legend,
   Tooltip,
 } from 'recharts'
-import { retrieveProposal } from '../Dominion'
+import { getProposal, voteOnProposal } from '../Dominion'
 
 const ProposalDetails = () => {
   const { id } = useParams()
@@ -18,20 +18,18 @@ const ProposalDetails = () => {
 
   const [data, setData] = useState([])
 
-  useEffect(() => getProposal(), [id])
-
-  const getProposal = () => {
-    retrieveProposal(id).then((res) => {
+  useEffect(() => {
+    getProposal(id).then((res) => {
       setProposal(res)
       setData([
         {
           name: 'Voters',
-          Acceptees: proposal.upvotes,
-          Rejectees: proposal.downvotes,
+          Acceptees: res?.upvotes,
+          Rejectees: res?.downvotes,
         },
       ])
     })
-  }
+  }, [id])
 
   const daysRemaining = (days) => {
     const todaysdate = moment()
@@ -79,6 +77,7 @@ const ProposalDetails = () => {
           dark:border dark:border-gray-500 dark:bg-transparent"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
+          onClick={() => voteOnProposal(id, true)}
         >
           Accept
         </button>
@@ -94,6 +93,7 @@ const ProposalDetails = () => {
           dark:border dark:border-gray-500 dark:bg-transparent"
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
+          onClick={() => voteOnProposal(id, false)}
         >
           Reject
         </button>
