@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import Identicon from 'react-identicons'
 import { Link } from 'react-router-dom'
 import { truncate, useGlobalState, daysRemaining } from '../store'
 
 const Proposals = () => {
-  const [proposals] = useGlobalState('proposals')
+  const [data] = useGlobalState('proposals')
+  const [proposals, setProposals] = useState(data)
 
   const deactive = `bg-transparent
   text-blue-600 font-medium text-xs leading-tight
@@ -19,18 +21,35 @@ const Proposals = () => {
   transition duration-150 ease-in-out overflow-hidden
   border border-blue-600`
 
+  const getAll = () => setProposals(data)
+
+  const getOpened = () =>
+    setProposals(data.filter((proposal) => !proposal.passed))
+
+  const getClosed = () =>
+    setProposals(data.filter((proposal) => proposal.passed))
+
   return (
     <div className="flex flex-col p-8">
       <div className="flex flex-row justify-center items-center" role="group">
         <button
           aria-current="page"
           className={`rounded-l-full px-6 py-2.5 ${active}`}
+          onClick={getAll}
+        >
+          All
+        </button>
+        <button
+          aria-current="page"
+          className={`px-6 py-2.5 ${deactive}`}
+          onClick={getOpened}
         >
           Open
         </button>
         <button
           aria-current="page"
           className={`rounded-r-full px-6 py-2.5 ${deactive}`}
+          onClick={getClosed}
         >
           Closed
         </button>
