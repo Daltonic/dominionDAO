@@ -15,7 +15,6 @@ import { getProposal, voteOnProposal } from '../Dominion'
 const ProposalDetails = () => {
   const { id } = useParams()
   const [proposal, setProposal] = useState(null)
-
   const [data, setData] = useState([])
 
   useEffect(() => {

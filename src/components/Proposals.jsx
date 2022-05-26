@@ -70,7 +70,7 @@ const Proposals = () => {
                     scope="col"
                     className="text-sm font-medium px-6 py-4 text-left"
                   >
-                    Description
+                    Title
                   </th>
                   <th
                     scope="col"
@@ -103,7 +103,7 @@ const Proposals = () => {
                       </div>
                     </td>
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                      {proposal.description.substring(0, 80) + '...'}
+                      {proposal.title.substring(0, 80) + '...'}
                     </td>
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                       {daysRemaining(proposal.duration)}
@@ -128,17 +128,19 @@ const Proposals = () => {
         </div>
       </div>
       <div className="mt-4 text-center">
-        <button
-          aria-current="page"
-          className="rounded-full px-6 py-2.5 bg-blue-600
+        {proposals.length >= 10 ? (
+          <button
+            aria-current="page"
+            className="rounded-full px-6 py-2.5 bg-blue-600
             text-white font-medium text-xs leading-tight
             uppercase hover:bg-blue-700 focus:bg-blue-700
             focus:outline-none focus:ring-0 active:bg-blue-800
             transition duration-150 ease-in-out dark:text-gray-300
             dark:border dark:border-gray-500 dark:bg-transparent"
-        >
-          Load More
-        </button>
+          >
+            Load More
+          </button>
+        ) : null}
       </div>
     </div>
   )

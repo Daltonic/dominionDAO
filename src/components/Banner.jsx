@@ -4,28 +4,31 @@ import { performContribute } from '../Dominion'
 
 const Banner = () => {
   const [isStakeholder] = useGlobalState('isStakeholder')
+  const [proposals] = useGlobalState('proposals')
+  const [balance] = useGlobalState('balance')
   const [amount, setAmount] = useState('')
 
   const onPropose = () => {
-    if(!isStakeholder) return
+    if (!isStakeholder) return
     setGlobalState('createModal', 'scale-100')
   }
 
   const onContribute = () => {
-    if(!!!amount || amount == '') return
-    performContribute(amount).then(res => {
-      if(res) window.location.reload()
+    if (!!!amount || amount == '') return
+    performContribute(amount).then((res) => {
+      if (res) window.location.reload()
     })
   }
+
+  const opened = () => proposals.filter((proposal) => !proposal.passed).length
 
   return (
     <div className="p-8">
       <h2 className="font-semibold text-3xl mb-5">
-        3 Proposals Currenly Opened
+        {opened()} Proposal{opened() == 1 ? '' : 's'} Currenly Opened
       </h2>
       <p>
-        Learn the by example how to build a ful-fledge decentralized autonomous
-        organization.
+        Current DAO Balance: <span className="font-bold">{balance} Eth</span>
       </p>
       <hr className="my-6 border-gray-300 dark:border-gray-500" />
       <p>
@@ -53,36 +56,39 @@ const Banner = () => {
       >
         <button
           type="button"
-          className="inline-block px-6 py-2.5
+          className={`inline-block px-6 py-2.5
           bg-blue-600 text-white font-medium text-xs
-          leading-tight uppercase rounded-l-full shadow-md
+          leading-tight uppercase shadow-md
           hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
           focus:shadow-lg focus:outline-none focus:ring-0
           active:bg-blue-800 active:shadow-lg transition
           duration-150 ease-in-out dark:text-blue-500
-          dark:border dark:border-blue-500 dark:bg-transparent"
+          dark:border dark:border-blue-500 dark:bg-transparent
+          ${!isStakeholder ? 'rounded-full' : 'rounded-l-full'}`}
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
           onClick={onContribute}
         >
           Contribute
         </button>
-        <button
-          type="button"
-          className="inline-block px-6 py-2.5
-          bg-blue-600 font-medium text-xs
-          leading-tight uppercase rounded-r-full shadow-md
-          hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-          focus:shadow-lg focus:outline-none focus:ring-0
-          active:bg-blue-800 active:shadow-lg transition
-          duration-150 ease-in-out dark:text-blue-500
-          dark:border dark:border-blue-500 dark:bg-transparent"
-          data-mdb-ripple="true"
-          data-mdb-ripple-color="light"
-          onClick={onPropose}
-        >
-          Propose
-        </button>
+        {isStakeholder ? (
+          <button
+            type="button"
+            className="inline-block px-6 py-2.5
+            bg-blue-600 font-medium text-xs
+            leading-tight uppercase rounded-r-full shadow-md
+            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+            focus:shadow-lg focus:outline-none focus:ring-0
+            active:bg-blue-800 active:shadow-lg transition
+            duration-150 ease-in-out dark:text-blue-500
+            dark:border dark:border-blue-500 dark:bg-transparent"
+            data-mdb-ripple="true"
+            data-mdb-ripple-color="light"
+            onClick={onPropose}
+          >
+            Propose
+          </button>
+        ) : null}
       </div>
     </div>
   )

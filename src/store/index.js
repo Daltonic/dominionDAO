@@ -8,8 +8,8 @@ const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
   connectedAccount: '',
   contract: null,
   isStakeholder: false,
-  totalProposals: 0,
-  proposals: []
+  balance: 0,
+  proposals: [],
 })
 
 const setAlert = (msg, color = 'green') => {
@@ -53,5 +53,5 @@ export {
   setAlert,
   setLoadingMsg,
   truncate,
-  daysRemaining
+  daysRemaining,
 }

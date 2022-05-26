@@ -55,7 +55,6 @@ const retrieveProposal = async (id) => {
   try {
     const contract = getGlobalState('contract')
     const proposal = await contract.methods.getProposal(id).call().wait()
-    console.log(proposal)
     return {
       id: proposal.id,
       amount: web3.utils.fromWei(proposal.amount),
@@ -131,10 +130,12 @@ const loadWeb3 = async () => {
         .isStakeholder()
         .call({ from: accounts[0] })
       const proposals = await contract.methods.getProposals().call()
+      const balance = await contract.methods.daoBalance().call()
 
+      setGlobalState('contract', contract)
+      setGlobalState('balance', web3.utils.fromWei(balance))
       setGlobalState('isStakeholder', isStakeholder)
       setGlobalState('proposals', structuredProposals(proposals))
-      setGlobalState('contract', contract)
     } else {
       window.alert('DominionDAO contract not deployed to detected network.')
     }
