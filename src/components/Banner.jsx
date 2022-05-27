@@ -75,7 +75,7 @@ const Banner = () => {
           <button
             type="button"
             className="inline-block px-6 py-2.5
-            bg-blue-600 font-medium text-xs
+            bg-blue-600 text-white font-medium text-xs
             leading-tight uppercase rounded-r-full shadow-md
             hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
             focus:shadow-lg focus:outline-none focus:ring-0

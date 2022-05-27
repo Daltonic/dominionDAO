@@ -106,6 +106,17 @@ const listVoters = async (id) => {
   }
 }
 
+const payoutBeneficiary = async (id) => {
+  try {
+    const contract = getGlobalState('contract')
+    const account = getGlobalState('connectedAccount')
+    await contract.methods.payBeneficiary(id).send({ from: account })
+    return true
+  } catch (error) {
+    return error
+  }
+}
+
 const loadWeb3 = async () => {
   try {
     if (!ethereum) return alert('Please install Metamask')
@@ -174,5 +185,6 @@ export {
   retrieveProposal,
   voteOnProposal,
   getProposal,
-  listVoters
+  listVoters,
+  payoutBeneficiary,
 }

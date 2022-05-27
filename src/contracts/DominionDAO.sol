@@ -137,6 +137,7 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
     {
         ProposalStruct storage proposal = raisedProposals[proposalId];
         require(daoBalance >= proposal.amount, "Insufficient fund");
+        require(block.timestamp > proposal.duration, "Proposal still ongoing");
 
         if (proposal.paid) revert("Payment sent before");
 

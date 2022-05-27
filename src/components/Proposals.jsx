@@ -1,7 +1,9 @@
-import { useState } from 'react'
 import Identicon from 'react-identicons'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { truncate, useGlobalState, daysRemaining } from '../store'
+import { payoutBeneficiary } from '../Dominion'
+import { toast } from 'react-toastify'
 
 const Proposals = () => {
   const [data] = useGlobalState('proposals')
@@ -28,6 +30,17 @@ const Proposals = () => {
 
   const getClosed = () =>
     setProposals(data.filter((proposal) => proposal.passed))
+
+  const handlePayout = (id) => {
+    payoutBeneficiary(id)
+      .then((res) => {
+        if (res) {
+          toast.success('Beneficiary successfully Paid Out!')
+          window.location.reload()
+        }
+      })
+      .catch((error) => toast.error(error.message))
+  }
 
   return (
     <div className="flex flex-col p-8">
@@ -108,17 +121,46 @@ const Proposals = () => {
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                       {daysRemaining(proposal.duration)}
                     </td>
-                    <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
+                    <td
+                      className="flex justify-start items-center space-x-3
+                      text-sm font-light px-6 py-4 whitespace-nowrap"
+                    >
                       <Link
                         to={'/proposal/' + proposal.id}
-                        className="border rounded-full px-6 py-2.5 border-blue-600
-                          text-blue-600 font-medium text-xs leading-tight
+                        className="dark:border rounded-full px-6 py-2.5 dark:border-blue-600
+                          dark:text-blue-600 dark:bg-transparent font-medium text-xs leading-tight
                           uppercase hover:border-blue-700 focus:border-blue-700
                           focus:outline-none focus:ring-0 active:border-blue-800
-                          transition duration-150 ease-in-out"
+                          transition duration-150 ease-in-out text-white bg-blue-600"
                       >
                         View
                       </Link>
+
+                      {new Date().getTime() >
+                      Number(proposal.duration + '000') ? (
+                        !proposal.paid ? (
+                          <button
+                            className="dark:border rounded-full px-6 py-2.5 dark:border-red-600
+                            dark:text-red-600 dark:bg-transparent font-medium text-xs leading-tight
+                            uppercase hover:border-red-700 focus:border-red-700
+                            focus:outline-none focus:ring-0 active:border-red-800
+                            transition duration-150 ease-in-out text-white bg-red-600"
+                            onClick={() => handlePayout(proposal.id)}
+                          >
+                            Payout
+                          </button>
+                        ) : (
+                          <button
+                            className="dark:border rounded-full px-6 py-2.5 dark:border-green-600
+                            dark:text-green-600 dark:bg-transparent font-medium text-xs leading-tight
+                            uppercase hover:border-green-700 focus:border-green-700
+                            focus:outline-none focus:ring-0 active:border-green-800
+                            transition duration-150 ease-in-out text-white bg-green-600"
+                          >
+                            Paid
+                          </button>
+                        )
+                      ) : null}
                     </td>
                   </tr>
                 ))}

@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import {
   BarChart,
   Bar,
@@ -11,11 +12,13 @@ import {
   Tooltip,
 } from 'recharts'
 import { getProposal, voteOnProposal } from '../Dominion'
+import { useGlobalState } from '../store'
 
 const ProposalDetails = () => {
   const { id } = useParams()
   const [proposal, setProposal] = useState(null)
   const [data, setData] = useState([])
+  const [isStakeholder] = useGlobalState('isStakeholder')
 
   useEffect(() => {
     getProposal(id).then((res) => {
@@ -29,6 +32,17 @@ const ProposalDetails = () => {
       ])
     })
   }, [id])
+
+  const onVote = (choice) => {
+    voteOnProposal(id, choice)
+      .then((res) => {
+        if (res) {
+          toast.success('Voted successfully!')
+          window.location.reload()
+        }
+      })
+      .catch((error) => toast.error(error.message))
+  }
 
   const daysRemaining = (days) => {
     const todaysdate = moment()
@@ -60,13 +74,14 @@ const ProposalDetails = () => {
           <Bar dataKey="Rejectees" fill="#dc2626" />
         </BarChart>
       </div>
-      <div
-        className="flex flex-row justify-start items-center mt-4"
-        role="group"
-      >
-        <button
-          type="button"
-          className="inline-block px-6 py-2.5
+      {isStakeholder ? (
+        <div
+          className="flex flex-row justify-start items-center mt-4"
+          role="group"
+        >
+          <button
+            type="button"
+            className="inline-block px-6 py-2.5
           bg-blue-600 text-white font-medium text-xs
           leading-tight uppercase rounded-l-full shadow-md
           hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
@@ -74,29 +89,45 @@ const ProposalDetails = () => {
           active:bg-blue-800 active:shadow-lg transition
           duration-150 ease-in-out dark:text-gray-300
           dark:border dark:border-gray-500 dark:bg-transparent"
-          data-mdb-ripple="true"
-          data-mdb-ripple-color="light"
-          onClick={() => voteOnProposal(id, true)}
-        >
-          Accept
-        </button>
-        <button
-          type="button"
-          className="inline-block px-6 py-2.5
+            data-mdb-ripple="true"
+            data-mdb-ripple-color="light"
+            onClick={() => onVote(true)}
+          >
+            Accept
+          </button>
+          <button
+            type="button"
+            className="inline-block px-6 py-2.5
+          bg-blue-600 text-white font-medium text-xs
+          leading-tight uppercase shadow-md
+          hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+          focus:shadow-lg focus:outline-none focus:ring-0
+          active:bg-blue-800 active:shadow-lg transition
+          duration-150 ease-in-out
+          dark:border dark:border-gray-500 dark:bg-transparent"
+            data-mdb-ripple="true"
+            data-mdb-ripple-color="light"
+            onClick={() => onVote(false)}
+          >
+            Reject
+          </button>
+          <button
+            type="button"
+            className="inline-block px-6 py-2.5
           bg-blue-600 text-white font-medium text-xs
           leading-tight uppercase rounded-r-full shadow-md
           hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
           focus:shadow-lg focus:outline-none focus:ring-0
           active:bg-blue-800 active:shadow-lg transition
           duration-150 ease-in-out
-          dark:border dark:border-gray-500 dark:bg-transparent"
-          data-mdb-ripple="true"
-          data-mdb-ripple-color="light"
-          onClick={() => voteOnProposal(id, false)}
-        >
-          Reject
-        </button>
-      </div>
+          dark:border dark:border-blue-500"
+            data-mdb-ripple="true"
+            data-mdb-ripple-color="light"
+          >
+            Chat
+          </button>
+        </div>
+      ) : null}
     </div>
   )
 }

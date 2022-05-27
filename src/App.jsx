@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { loadWeb3 } from './Dominion'
+import { ToastContainer } from 'react-toastify';
 import Home from './views/Home'
 import Proposal from './views/Proposal'
-import { loadWeb3 } from './Dominion'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 const App = () => {
   const [loaded, setLoaded] = useState(false)
@@ -20,6 +22,17 @@ const App = () => {
           <Route path="proposal/:id" element={<Proposal />} />
         </Routes>
       ) : null}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
 }
