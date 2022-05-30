@@ -1,5 +1,5 @@
 import Banner from '../components/Banner'
-import CreateDAO from '../components/CreateDAO'
+import CreateProposal from '../components/CreateProposal'
 import Header from '../components/Header'
 import Proposals from '../components/Proposals'
 
@@ -9,7 +9,7 @@ const Home = () => {
       <Header />
       <Banner />
       <Proposals />
-      <CreateDAO />
+      <CreateProposal />
     </>
   )
 }

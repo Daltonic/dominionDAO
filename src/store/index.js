@@ -3,6 +3,7 @@ import moment from 'moment'
 
 const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
   createModal: 'scale-0',
+  loginModal: 'scale-0',
   alert: { show: false, msg: '', color: '' },
   loading: { show: false, msg: '' },
   connectedAccount: '',
@@ -12,19 +13,6 @@ const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
   mybalance: 0,
   proposals: [],
 })
-
-const setAlert = (msg, color = 'green') => {
-  setGlobalState('loading', false)
-  setGlobalState('alert', { show: true, msg, color })
-  setTimeout(() => {
-    setGlobalState('alert', { show: false, msg: '', color })
-  }, 6000)
-}
-
-const setLoadingMsg = (msg) => {
-  const loading = getGlobalState('loading')
-  setGlobalState('loading', { ...loading, msg })
-}
 
 const truncate = (text, startChars, endChars, maxLength) => {
   if (text.length > maxLength) {
@@ -51,8 +39,6 @@ export {
   useGlobalState,
   setGlobalState,
   getGlobalState,
-  setAlert,
-  setLoadingMsg,
   truncate,
   daysRemaining,
 }

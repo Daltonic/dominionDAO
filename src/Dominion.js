@@ -1,10 +1,5 @@
 import Web3 from 'web3'
-import {
-  setAlert,
-  setGlobalState,
-  getGlobalState,
-  setLoadingMsg,
-} from './store'
+import { setGlobalState, getGlobalState } from './store'
 import DominionDAO from './abis/DominionDAO.json'
 
 const { ethereum } = window
@@ -16,7 +11,6 @@ const connectWallet = async () => {
     setGlobalState('connectedAccount', accounts[0])
   } catch (error) {
     console.log(JSON.stringify(error))
-    // setAlert(JSON.stringify(error), 'red')
   }
 }
 
@@ -142,7 +136,9 @@ const loadWeb3 = async () => {
         .call({ from: accounts[0] })
       const proposals = await contract.methods.getProposals().call()
       const balance = await contract.methods.daoBalance().call()
-      const mybalance = await contract.methods.getBalance().call({from: accounts[0]})
+      const mybalance = await contract.methods
+        .getBalance()
+        .call({ from: accounts[0] })
 
       setGlobalState('contract', contract)
       setGlobalState('balance', web3.utils.fromWei(balance))

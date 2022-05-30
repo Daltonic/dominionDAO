@@ -2,6 +2,7 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { setGlobalState } from '../store'
 import {
   BarChart,
   Bar,
@@ -115,15 +116,16 @@ const ProposalDetails = () => {
           <button
             type="button"
             className="inline-block px-6 py-2.5
-          bg-blue-600 text-white font-medium text-xs
-          leading-tight uppercase rounded-r-full shadow-md
-          hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-          focus:shadow-lg focus:outline-none focus:ring-0
-          active:bg-blue-800 active:shadow-lg transition
-          duration-150 ease-in-out
-          dark:border dark:border-blue-500"
+            bg-blue-600 text-white font-medium text-xs
+            leading-tight uppercase rounded-r-full shadow-md
+            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+            focus:shadow-lg focus:outline-none focus:ring-0
+            active:bg-blue-800 active:shadow-lg transition
+            duration-150 ease-in-out
+            dark:border dark:border-blue-500"
             data-mdb-ripple="true"
             data-mdb-ripple-color="light"
+            onClick={() => setGlobalState('loginModal', 'scale-100')}
           >
             Chat
           </button>

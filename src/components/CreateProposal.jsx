@@ -3,7 +3,7 @@ import { FaTimes } from 'react-icons/fa'
 import { raiseProposal } from '../Dominion'
 import { setGlobalState, useGlobalState } from '../store'
 
-const CreateDAO = () => {
+const CreateProposal = () => {
   const [createModal] = useGlobalState('createModal')
   const [title, setTitle] = useState('')
   const [amount, setAmount] = useState('')
@@ -125,4 +125,4 @@ const CreateDAO = () => {
   )
 }
 
-export default CreateDAO
+export default CreateProposal
