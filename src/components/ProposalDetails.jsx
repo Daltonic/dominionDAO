@@ -57,9 +57,10 @@ const ProposalDetails = () => {
     <div className="p-8">
       <h2 className="font-semibold text-3xl mb-5">{proposal?.title}</h2>
       <p>
-        This proposal currently have {proposal?.upvotes + proposal?.downvotes}{' '}
-        votes and will expire in{' '}
-        <span className="font-bold">{daysRemaining(proposal?.duration)}</span>
+        This proposal is to payout <strong>{proposal?.amount} Eth</strong> and
+        currently have{' '}
+        <strong>{proposal?.upvotes + proposal?.downvotes} votes</strong> and
+        will expire in <strong>{daysRemaining(proposal?.duration)}</strong>
       </p>
       <hr className="my-6 border-gray-300" />
       <p>{proposal?.description}</p>

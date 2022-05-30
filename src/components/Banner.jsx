@@ -6,6 +6,7 @@ const Banner = () => {
   const [isStakeholder] = useGlobalState('isStakeholder')
   const [proposals] = useGlobalState('proposals')
   const [balance] = useGlobalState('balance')
+  const [mybalance] = useGlobalState('mybalance')
   const [amount, setAmount] = useState('')
 
   const onPropose = () => {
@@ -28,12 +29,18 @@ const Banner = () => {
         {opened()} Proposal{opened() == 1 ? '' : 's'} Currenly Opened
       </h2>
       <p>
-        Current DAO Balance: <span className="font-bold">{balance} Eth</span>
+        Current DAO Balance: <strong>{balance} Eth</strong> <br />
+        Your contributions:{' '}
+        <span>
+          <strong>{mybalance} Eth</strong>
+          {isStakeholder ? ', and you are now a stakeholder 😊' : null}
+        </span>
       </p>
       <hr className="my-6 border-gray-300 dark:border-gray-500" />
       <p>
-        This is a build one out of many <span className="font-bold">DAO</span>{' '}
-        applications scheduled to show up on this platform.
+        {isStakeholder
+          ? 'You can now raise proposals on this platform 😆'
+          : 'Hey, when you contribute upto 5 ethers you become a stakeholder 😎'}
       </p>
       <div className="flex flex-row justify-start items-center md:w-1/3 w-full mt-4">
         <input

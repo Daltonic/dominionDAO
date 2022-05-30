@@ -94,7 +94,7 @@ const Voters = () => {
                 {voters.map((voter, i) => (
                   <tr
                     key={i}
-                    className="cursor-pointer border-b dark:border-gray-500 transition duration-300 ease-in-out"
+                    className="border-b dark:border-gray-500 transition duration-300 ease-in-out"
                   >
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                       <div className="flex flex-row justify-start items-center space-x-3">

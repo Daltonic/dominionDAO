@@ -9,6 +9,7 @@ const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
   contract: null,
   isStakeholder: false,
   balance: 0,
+  mybalance: 0,
   proposals: [],
 })
 

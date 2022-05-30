@@ -142,9 +142,11 @@ const loadWeb3 = async () => {
         .call({ from: accounts[0] })
       const proposals = await contract.methods.getProposals().call()
       const balance = await contract.methods.daoBalance().call()
+      const mybalance = await contract.methods.getBalance().call({from: accounts[0]})
 
       setGlobalState('contract', contract)
       setGlobalState('balance', web3.utils.fromWei(balance))
+      setGlobalState('mybalance', web3.utils.fromWei(mybalance))
       setGlobalState('isStakeholder', isStakeholder)
       setGlobalState('proposals', structuredProposals(proposals))
     } else {

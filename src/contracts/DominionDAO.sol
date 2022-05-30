@@ -255,6 +255,10 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
         return contributors[msg.sender] > 0;
     }
 
+    function getBalance() external view returns (uint256) {
+        return contributors[msg.sender];
+    }
+
     function payTo(
         address to, 
         uint256 amount

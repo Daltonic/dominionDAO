@@ -103,7 +103,7 @@ const Proposals = () => {
                 {proposals.map((proposal) => (
                   <tr
                     key={proposal.id}
-                    className="cursor-pointer border-b dark:border-gray-500"
+                    className="border-b dark:border-gray-500"
                   >
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                       <div className="flex flex-row justify-start items-center space-x-3">
