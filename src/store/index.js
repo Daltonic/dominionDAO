@@ -4,10 +4,9 @@ import moment from 'moment'
 const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
   createModal: 'scale-0',
   loginModal: 'scale-0',
-  alert: { show: false, msg: '', color: '' },
-  loading: { show: false, msg: '' },
   connectedAccount: '',
   contract: null,
+  currentUser: null,
   isStakeholder: false,
   balance: 0,
   mybalance: 0,

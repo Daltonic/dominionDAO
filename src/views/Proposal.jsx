@@ -1,4 +1,3 @@
-import ChatLogin from '../components/ChatLogin'
 import Header from '../components/Header'
 import ProposalDetails from '../components/ProposalDetails'
 import Voters from '../components/Voters'
@@ -9,7 +8,6 @@ const Proposal = () => {
       <Header />
       <ProposalDetails />
       <Voters />
-      <ChatLogin />
     </>
   )
 }

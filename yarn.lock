@@ -1063,6 +1063,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@cometchat-pro/chat@3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@cometchat-pro/chat/-/chat-3.0.6.tgz#4293f01632e12f1d75e64623eccde7bc748874f2"
+  integrity sha512-RW5+/zFfxlLaDvuEgFXC894ucTMcMe5386wh4SQHXNuHqiLU+KxsdZg9AC3/jc7E++10QNgALGrOCP7xVcGuGA==
+
 "@csstools/normalize.css@*":
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-12.0.0.tgz#a9583a75c3f150667771f30b60d9f059473e62c4"

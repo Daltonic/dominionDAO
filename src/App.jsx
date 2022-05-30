@@ -5,6 +5,8 @@ import { ToastContainer } from 'react-toastify';
 import Home from './views/Home'
 import Proposal from './views/Proposal'
 import 'react-toastify/dist/ReactToastify.min.css'
+import { isUserLoggedIn } from './CometChat';
+import { setGlobalState } from './store';
 
 const App = () => {
   const [loaded, setLoaded] = useState(false)
@@ -12,6 +14,11 @@ const App = () => {
     loadWeb3().then((res) => {
       if (res) setLoaded(true)
     })
+    isUserLoggedIn().then(user => {
+      // setGlobalState('currentUser', user)
+      console.log(user, "first")
+    })
+    // console.log(isUserLoggedIn())
   }, [])
 
   return (
@@ -22,8 +29,9 @@ const App = () => {
           <Route path="proposal/:id" element={<Proposal />} />
         </Routes>
       ) : null}
+
       <ToastContainer
-        position="bottom-center"
+        position="top-center"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}

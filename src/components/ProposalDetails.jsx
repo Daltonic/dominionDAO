@@ -2,7 +2,6 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { setGlobalState } from '../store'
 import {
   BarChart,
   Bar,
@@ -20,8 +19,14 @@ const ProposalDetails = () => {
   const [proposal, setProposal] = useState(null)
   const [data, setData] = useState([])
   const [isStakeholder] = useGlobalState('isStakeholder')
+  const [connectedAccount] = useGlobalState('connectedAccount')
+  const [currentUser] = useGlobalState('currentUser')
 
   useEffect(() => {
+    retrieveProposal()
+  }, [id])
+
+  const retrieveProposal = () => {
     getProposal(id).then((res) => {
       setProposal(res)
       setData([
@@ -32,7 +37,7 @@ const ProposalDetails = () => {
         },
       ])
     })
-  }, [id])
+  }
 
   const onVote = (choice) => {
     voteOnProposal(id, choice)
@@ -78,19 +83,19 @@ const ProposalDetails = () => {
       </div>
       {isStakeholder ? (
         <div
-          className="flex flex-row justify-start items-center mt-4"
+          className="flex flex-row justify-start items-center space-x-3 mt-4"
           role="group"
         >
           <button
             type="button"
             className="inline-block px-6 py-2.5
           bg-blue-600 text-white font-medium text-xs
-          leading-tight uppercase rounded-l-full shadow-md
-          hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-          focus:shadow-lg focus:outline-none focus:ring-0
-          active:bg-blue-800 active:shadow-lg transition
-          duration-150 ease-in-out dark:text-gray-300
-          dark:border dark:border-gray-500 dark:bg-transparent"
+            leading-tight uppercase rounded-full shadow-md
+            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+            focus:shadow-lg focus:outline-none focus:ring-0
+            active:bg-blue-800 active:shadow-lg transition
+            duration-150 ease-in-out dark:text-gray-300
+            dark:border dark:border-gray-500 dark:bg-transparent"
             data-mdb-ripple="true"
             data-mdb-ripple-color="light"
             onClick={() => onVote(true)}
@@ -101,34 +106,36 @@ const ProposalDetails = () => {
             type="button"
             className="inline-block px-6 py-2.5
           bg-blue-600 text-white font-medium text-xs
-          leading-tight uppercase shadow-md
-          hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-          focus:shadow-lg focus:outline-none focus:ring-0
-          active:bg-blue-800 active:shadow-lg transition
-          duration-150 ease-in-out
-          dark:border dark:border-gray-500 dark:bg-transparent"
+            leading-tight uppercase rounded-full shadow-md
+            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+            focus:shadow-lg focus:outline-none focus:ring-0
+            active:bg-blue-800 active:shadow-lg transition
+            duration-150 ease-in-out
+            dark:border dark:border-gray-500 dark:bg-transparent"
             data-mdb-ripple="true"
             data-mdb-ripple-color="light"
             onClick={() => onVote(false)}
           >
             Reject
           </button>
-          <button
-            type="button"
-            className="inline-block px-6 py-2.5
+          {currentUser &&
+          currentUser.uid == connectedAccount.toLowerCase() ? (
+            <button
+              type="button"
+              className="inline-block px-6 py-2.5
             bg-blue-600 text-white font-medium text-xs
-            leading-tight uppercase rounded-r-full shadow-md
+            leading-tight uppercase rounded-full shadow-md
             hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
             focus:shadow-lg focus:outline-none focus:ring-0
             active:bg-blue-800 active:shadow-lg transition
             duration-150 ease-in-out
             dark:border dark:border-blue-500"
-            data-mdb-ripple="true"
-            data-mdb-ripple-color="light"
-            onClick={() => setGlobalState('loginModal', 'scale-100')}
-          >
-            Chat
-          </button>
+              data-mdb-ripple="true"
+              data-mdb-ripple-color="light"
+            >
+              Chat
+            </button>
+          ) : null}
         </div>
       ) : null}
     </div>

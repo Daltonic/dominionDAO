@@ -5,6 +5,8 @@ import { performContribute } from '../Dominion'
 const Banner = () => {
   const [isStakeholder] = useGlobalState('isStakeholder')
   const [proposals] = useGlobalState('proposals')
+  const [connectedAccount] = useGlobalState('connectedAccount')
+  const [currentUser] = useGlobalState('currentUser')
   const [balance] = useGlobalState('balance')
   const [mybalance] = useGlobalState('mybalance')
   const [amount, setAmount] = useState('')
@@ -58,37 +60,37 @@ const Banner = () => {
         />
       </div>
       <div
-        className="flex flex-row justify-start items-center mt-4"
+        className="flex flex-row justify-start items-center space-x-3 mt-4"
         role="group"
       >
         <button
           type="button"
           className={`inline-block px-6 py-2.5
           bg-blue-600 text-white font-medium text-xs
-          leading-tight uppercase shadow-md
+          leading-tight uppercase shadow-md rounded-full
           hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
           focus:shadow-lg focus:outline-none focus:ring-0
           active:bg-blue-800 active:shadow-lg transition
           duration-150 ease-in-out dark:text-blue-500
-          dark:border dark:border-blue-500 dark:bg-transparent
-          ${!isStakeholder ? 'rounded-full' : 'rounded-l-full'}`}
+          dark:border dark:border-blue-500 dark:bg-transparent`}
           data-mdb-ripple="true"
           data-mdb-ripple-color="light"
           onClick={onContribute}
         >
           Contribute
         </button>
+
         {isStakeholder ? (
           <button
             type="button"
-            className="inline-block px-6 py-2.5
+            className={`inline-block px-6 py-2.5
             bg-blue-600 text-white font-medium text-xs
-            leading-tight uppercase rounded-r-full shadow-md
+            leading-tight uppercase shadow-md rounded-full
             hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
             focus:shadow-lg focus:outline-none focus:ring-0
             active:bg-blue-800 active:shadow-lg transition
             duration-150 ease-in-out dark:text-blue-500
-            dark:border dark:border-blue-500 dark:bg-transparent"
+            dark:border dark:border-blue-500 dark:bg-transparent`}
             data-mdb-ripple="true"
             data-mdb-ripple-color="light"
             onClick={onPropose}
@@ -96,6 +98,24 @@ const Banner = () => {
             Propose
           </button>
         ) : null}
+        {currentUser &&
+        currentUser.uid == connectedAccount.toLowerCase() ? null : (
+          <button
+            type="button"
+            className={`inline-block px-6 py-2.5
+            bg-blue-600 text-white font-medium text-xs
+            leading-tight uppercase shadow-md rounded-full
+            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+            focus:shadow-lg focus:outline-none focus:ring-0
+            active:bg-blue-800 active:shadow-lg transition
+            duration-150 ease-in-out dark:border dark:border-blue-500`}
+            data-mdb-ripple="true"
+            data-mdb-ripple-color="light"
+            onClick={() => setGlobalState('loginModal', 'scale-100')}
+          >
+            Login Chat
+          </button>
+        )}
       </div>
     </div>
   )
