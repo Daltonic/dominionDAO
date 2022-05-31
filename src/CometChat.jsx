@@ -58,40 +58,62 @@ const logOutWithCometChat = async () => {
 }
 
 const isUserLoggedIn = async () => {
-    await CometChat.getLoggedinUser()
+  await CometChat.getLoggedinUser()
     .then((user) => setGlobalState('currentUser', user))
     .catch((error) => console.log('error getting details:', { error }))
 
-    return true
+  return true
+}
+
+const createNewGroup = async (GUID, groupName) => {
+  const groupType = CometChat.GROUP_TYPE.PUBLIC
+  const password = ''
+  const group = new CometChat.Group(GUID, groupName, groupType, password)
+
+  return await CometChat.createGroup(group)
+    .then((group) => group)
+    .catch((error) => error)
+}
+
+const getGroup = async (GUID) => {
+  return await CometChat.getGroup(GUID)
+    .then((group) => group)
+    .catch((error) => error)
+}
+
+const joinGroup = async (GUID) => {
+  const groupType = CometChat.GROUP_TYPE.PUBLIC
+  const password = ''
+
+  return CometChat.joinGroup(GUID, groupType, password)
+    .then((group) => group)
+    .catch((error) => error)
 }
 
 const getMessages = async (UID) => {
-  try {
-    const limit = 30
-    const messagesRequest = await new CometChat.MessagesRequestBuilder()
-      .setUID(UID)
-      .setLimit(limit)
-      .build()
+  const limit = 30
+  const messagesRequest = new CometChat.MessagesRequestBuilder()
+    .setUID(UID)
+    .setLimit(limit)
+    .build()
 
-    return await messagesRequest.fetchPrevious().then((messages) => messages)
-  } catch (error) {
-    console.log(error)
-  }
+  return await messagesRequest
+    .fetchPrevious()
+    .then((messages) => messages)
+    .catch((error) => error)
 }
 
 const sendMessage = async (receiverID, messageText) => {
-  try {
-    const receiverType = CometChat.RECEIVER_TYPE.USER
-    const textMessage = await new CometChat.TextMessage(
-      receiverID,
-      messageText,
-      receiverType
-    )
+  const receiverType = CometChat.RECEIVER_TYPE.USER
+  const textMessage = new CometChat.TextMessage(
+    receiverID,
+    messageText,
+    receiverType
+  )
 
-    return await CometChat.sendMessage(textMessage).then((message) => message)
-  } catch (error) {
-    console.log(error)
-  }
+  return await CometChat.sendMessage(textMessage)
+    .then((message) => message)
+    .catch((error) => error)
 }
 
 const getConversations = async () => {
@@ -117,5 +139,8 @@ export {
   getMessages,
   sendMessage,
   getConversations,
-  isUserLoggedIn
+  isUserLoggedIn,
+  createNewGroup,
+  getGroup,
+  joinGroup
 }

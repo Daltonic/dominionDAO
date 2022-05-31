@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { raiseProposal } from '../Dominion'
 import { setGlobalState, useGlobalState } from '../store'
+import { toast } from 'react-toastify'
 
 const CreateProposal = () => {
   const [createModal] = useGlobalState('createModal')
@@ -13,9 +14,11 @@ const CreateProposal = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!title || !description || !beneficiary || !amount) return
-    raiseProposal({ title, description, beneficiary, amount }).then((res) => {
+    const proposal = { title, description, beneficiary, amount }
+
+    raiseProposal(proposal).then((res) => {
       if (res) {
-        console.log(res)
+        toast.success('Proposal created, reloading in progress...')
         closeModal()
         window.location.reload()
       }

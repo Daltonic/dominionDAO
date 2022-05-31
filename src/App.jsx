@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { loadWeb3 } from './Dominion'
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify'
+import { isUserLoggedIn } from './CometChat'
 import Home from './views/Home'
 import Proposal from './views/Proposal'
+import Chat from './views/Chat'
 import 'react-toastify/dist/ReactToastify.min.css'
-import { isUserLoggedIn } from './CometChat';
-import { setGlobalState } from './store';
 
 const App = () => {
   const [loaded, setLoaded] = useState(false)
@@ -14,11 +14,7 @@ const App = () => {
     loadWeb3().then((res) => {
       if (res) setLoaded(true)
     })
-    isUserLoggedIn().then(user => {
-      // setGlobalState('currentUser', user)
-      console.log(user, "first")
-    })
-    // console.log(isUserLoggedIn())
+    isUserLoggedIn()
   }, [])
 
   return (
@@ -27,6 +23,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="proposal/:id" element={<Proposal />} />
+          <Route path="chat/:gid" element={<Chat />} />
         </Routes>
       ) : null}
 
