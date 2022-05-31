@@ -8,53 +8,40 @@ const CONSTANTS = {
 }
 
 const initCometChat = async () => {
-  try {
-    const appID = CONSTANTS.APP_ID
-    const region = CONSTANTS.REGION
+  const appID = CONSTANTS.APP_ID
+  const region = CONSTANTS.REGION
 
-    const appSetting = new CometChat.AppSettingsBuilder()
-      .subscribePresenceForAllUsers()
-      .setRegion(region)
-      .build()
+  const appSetting = new CometChat.AppSettingsBuilder()
+    .subscribePresenceForAllUsers()
+    .setRegion(region)
+    .build()
 
-    await CometChat.init(appID, appSetting).then(() =>
-      console.log('Initialization completed successfully')
-    )
-  } catch (error) {
-    console.log(error)
-  }
+  await CometChat.init(appID, appSetting)
+    .then(() => console.log('Initialization completed successfully'))
+    .catch((error) => error)
 }
 
 const loginWithCometChat = async (UID) => {
-  try {
-    const authKey = CONSTANTS.Auth_Key
-    await CometChat.login(UID, authKey).then((user) =>
-      setGlobalState('currentUser', user)
-    )
-    return true
-  } catch (error) {
-    console.log(error)
-  }
+  const authKey = CONSTANTS.Auth_Key
+  return await CometChat.login(UID, authKey)
+    .then((user) => user)
+    .catch((error) => error)
 }
 
 const signInWithCometChat = async (UID, name) => {
-  try {
-    let authKey = CONSTANTS.Auth_Key
-    const user = new CometChat.User(UID)
-    user.setName(name)
+  let authKey = CONSTANTS.Auth_Key
+  const user = new CometChat.User(UID)
+  user.setName(name)
 
-    return await CometChat.createUser(user, authKey).then((user) => user)
-  } catch (error) {
-    console.log(error)
-  }
+  return await CometChat.createUser(user, authKey)
+    .then((user) => user)
+    .catch((error) => error)
 }
 
 const logOutWithCometChat = async () => {
-  try {
-    await CometChat.logout().then(() => console.log('Logged Out Successfully'))
-  } catch (error) {
-    console.log(error)
-  }
+  return await CometChat.logout()
+    .then(() => console.log('Logged Out Successfully'))
+    .catch((error) => error)
 }
 
 const isUserLoggedIn = async () => {
@@ -117,18 +104,15 @@ const sendMessage = async (receiverID, messageText) => {
 }
 
 const getConversations = async () => {
-  try {
-    const limit = 30
-    const conversationsRequest = new CometChat.ConversationsRequestBuilder()
-      .setLimit(limit)
-      .build()
+  const limit = 30
+  const conversationsRequest = new CometChat.ConversationsRequestBuilder()
+    .setLimit(limit)
+    .build()
 
-    return await conversationsRequest
-      .fetchNext()
-      .then((conversationList) => conversationList)
-  } catch (error) {
-    console.log(error)
-  }
+  return await conversationsRequest
+    .fetchNext()
+    .then((conversationList) => conversationList)
+    .catch((error) => error)
 }
 
 export {
@@ -142,5 +126,5 @@ export {
   isUserLoggedIn,
   createNewGroup,
   getGroup,
-  joinGroup
+  joinGroup,
 }

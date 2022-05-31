@@ -8,22 +8,24 @@ const ChatLogin = () => {
   const [connectedAccount] = useGlobalState('connectedAccount')
 
   const handleSignUp = () => {
-    signInWithCometChat(connectedAccount, connectedAccount).then((res) => {
-      if (res) {
-        console.log(res)
+    signInWithCometChat(connectedAccount, connectedAccount).then((user) => {
+      if (!!!user.code) {
         toast.success('Account created, logging in...')
         handleLogin()
+      } else {
+        toast.error(user.message)
       }
     })
   }
 
   const handleLogin = () => {
-    loginWithCometChat(connectedAccount).then((res) => {
-      if (res) {
+    loginWithCometChat(connectedAccount).then((user) => {
+      if (!!!user.code) {
+        setGlobalState('currentUser', user)
         toast.success('Logged in successful!')
         closeModal()
       } else {
-        toast.error('Failed to login: ensure you are signed up!')
+        toast.error(user.message)
       }
     })
   }

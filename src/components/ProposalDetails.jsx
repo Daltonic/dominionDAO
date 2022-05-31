@@ -28,11 +28,8 @@ const ProposalDetails = () => {
   useEffect(() => {
     retrieveProposal()
     getGroup(`pid_${id}`).then((group) => {
-      if (!!!group.code) {
-        setGroup(group)
-      } else {
-        console.log('Error Retreiving Group: ', group)
-      }
+      if (!!!group.code) setGroup(group)
+      console.log(group)
     })
   }, [id])
 
@@ -155,7 +152,8 @@ const ProposalDetails = () => {
             Reject
           </button>
           {currentUser &&
-          currentUser.uid == connectedAccount.toLowerCase() && !!group ? (
+          currentUser.uid == connectedAccount.toLowerCase() &&
+          group?.hasJoined ? (
             <button
               type="button"
               className="inline-block px-6 py-2.5
@@ -174,7 +172,8 @@ const ProposalDetails = () => {
             </button>
           ) : null}
 
-          {proposal?.proposer.toLowerCase() == connectedAccount.toLowerCase() && !!!group ? (
+          {proposal?.proposer.toLowerCase() == connectedAccount.toLowerCase() &&
+          !!group?.code ? (
             <button
               type="button"
               className="inline-block px-6 py-2.5
@@ -192,6 +191,26 @@ const ProposalDetails = () => {
               Create Group
             </button>
           ) : null}
+
+          {proposal?.proposer.toLowerCase() != connectedAccount.toLowerCase() &&
+            !!!group ? (
+              <button
+                type="button"
+                className="inline-block px-6 py-2.5 bg-blue-600
+                dark:bg-transparent text-white font-medium text-xs
+                leading-tight uppercase rounded-full shadow-md
+                hover:border-blue-700 hover:shadow-lg focus:border-blue-700
+                focus:shadow-lg focus:outline-none focus:ring-0
+                active:border-blue-800 active:shadow-lg transition
+                duration-150 ease-in-out dark:text-blue-500
+                dark:border dark:border-blue-500 disabled:bg-blue-300"
+                data-mdb-ripple="true"
+                data-mdb-ripple-color="light"
+                disabled
+              >
+                Group N/A
+              </button>
+            ) : null}
         </div>
       ) : null}
     </div>
