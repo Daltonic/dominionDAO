@@ -71,11 +71,11 @@ const ProposalDetails = () => {
 
   const onEnterChat = () => {
     if (group.hasJoined) {
-      navigator(`/chat/pid_${id}`)
+      navigator(`/chat/${`pid_${id}`}`)
     } else {
       joinGroup(`pid_${id}`).then((res) => {
-        if (!!!res) {
-          // navigator(`/chat/${id}`)
+        if (!!res) {
+          navigator(`/chat/${`pid_${id}`}`)
           console.log('Success joining: ', res)
         } else {
           console.log('Error Joining Group: ', res)
