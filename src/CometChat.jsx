@@ -80,7 +80,7 @@ const joinGroup = async (GUID) => {
 const getMessages = async (UID) => {
   const limit = 30
   const messagesRequest = new CometChat.MessagesRequestBuilder()
-    .setUID(UID)
+    .setGUID(UID)
     .setLimit(limit)
     .build()
 
@@ -91,7 +91,7 @@ const getMessages = async (UID) => {
 }
 
 const sendMessage = async (receiverID, messageText) => {
-  const receiverType = CometChat.RECEIVER_TYPE.USER
+  const receiverType = CometChat.RECEIVER_TYPE.GROUP
   const textMessage = new CometChat.TextMessage(
     receiverID,
     messageText,
@@ -103,18 +103,6 @@ const sendMessage = async (receiverID, messageText) => {
     .catch((error) => error)
 }
 
-const getConversations = async () => {
-  const limit = 30
-  const conversationsRequest = new CometChat.ConversationsRequestBuilder()
-    .setLimit(limit)
-    .build()
-
-  return await conversationsRequest
-    .fetchNext()
-    .then((conversationList) => conversationList)
-    .catch((error) => error)
-}
-
 export {
   initCometChat,
   loginWithCometChat,
@@ -122,9 +110,9 @@ export {
   logOutWithCometChat,
   getMessages,
   sendMessage,
-  getConversations,
   isUserLoggedIn,
   createNewGroup,
   getGroup,
   joinGroup,
+  CometChat
 }

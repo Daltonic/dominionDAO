@@ -29,7 +29,6 @@ const ProposalDetails = () => {
     retrieveProposal()
     getGroup(`pid_${id}`).then((group) => {
       if (!!!group.code) setGroup(group)
-      console.log(group)
     })
   }, [id])
 
@@ -153,7 +152,7 @@ const ProposalDetails = () => {
           </button>
           {currentUser &&
           currentUser.uid == connectedAccount.toLowerCase() &&
-          group?.hasJoined ? (
+          !!!group?.code ? (
             <button
               type="button"
               className="inline-block px-6 py-2.5
