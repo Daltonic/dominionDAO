@@ -32,14 +32,12 @@ const Proposals = () => {
     setProposals(data.filter((proposal) => proposal.passed))
 
   const handlePayout = (id) => {
-    payoutBeneficiary(id)
-      .then((res) => {
-        if (res) {
-          toast.success('Beneficiary successfully Paid Out!')
-          window.location.reload()
-        }
-      })
-      .catch((error) => toast.error(error.message))
+    payoutBeneficiary(id).then((res) => {
+      if (!!!res.code) {
+        toast.success('Beneficiary successfully Paid Out!')
+        window.location.reload()
+      }
+    })
   }
 
   return (
@@ -69,7 +67,7 @@ const Proposals = () => {
       </div>
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-          <div className="overflow-hidden shadow-md rounded-md">
+          <div className="h-[calc(100vh_-_20rem)] overflow-y-auto shadow-md rounded-md">
             <table className="min-w-full">
               <thead className="border-b dark:border-gray-500">
                 <tr>
@@ -152,10 +150,10 @@ const Proposals = () => {
                         ) : (
                           <button
                             className="dark:border rounded-full px-6 py-2.5 dark:border-green-600
-                            dark:text-green-600 dark:bg-transparent font-medium text-xs leading-tight
-                            uppercase hover:border-green-700 focus:border-green-700
-                            focus:outline-none focus:ring-0 active:border-green-800
-                            transition duration-150 ease-in-out text-white bg-green-600"
+                              dark:text-green-600 dark:bg-transparent font-medium text-xs leading-tight
+                              uppercase hover:border-green-700 focus:border-green-700
+                              focus:outline-none focus:ring-0 active:border-green-800
+                              transition duration-150 ease-in-out text-white bg-green-600"
                           >
                             Paid
                           </button>
@@ -168,21 +166,6 @@ const Proposals = () => {
             </table>
           </div>
         </div>
-      </div>
-      <div className="mt-4 text-center">
-        {proposals.length >= 10 ? (
-          <button
-            aria-current="page"
-            className="rounded-full px-6 py-2.5 bg-blue-600
-            text-white font-medium text-xs leading-tight
-            uppercase hover:bg-blue-700 focus:bg-blue-700
-            focus:outline-none focus:ring-0 active:bg-blue-800
-            transition duration-150 ease-in-out dark:text-gray-300
-            dark:border dark:border-gray-500 dark:bg-transparent"
-          >
-            Load More
-          </button>
-        ) : null}
       </div>
     </div>
   )

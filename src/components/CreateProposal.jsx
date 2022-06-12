@@ -16,8 +16,8 @@ const CreateProposal = () => {
     if (!title || !description || !beneficiary || !amount) return
     const proposal = { title, description, beneficiary, amount }
 
-    raiseProposal(proposal).then((res) => {
-      if (res) {
+    raiseProposal(proposal).then((proposed) => {
+      if (proposed) {
         toast.success('Proposal created, reloading in progress...')
         closeModal()
         window.location.reload()

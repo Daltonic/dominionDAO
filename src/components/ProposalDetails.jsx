@@ -29,6 +29,7 @@ const ProposalDetails = () => {
     retrieveProposal()
     getGroup(`pid_${id}`).then((group) => {
       if (!!!group.code) setGroup(group)
+      console.log(group)
     })
   }, [id])
 
@@ -46,14 +47,17 @@ const ProposalDetails = () => {
   }
 
   const onVote = (choice) => {
-    voteOnProposal(id, choice)
-      .then((res) => {
-        if (res) {
-          toast.success('Voted successfully!')
-          window.location.reload()
-        }
-      })
-      .catch((error) => toast.error(error.message))
+    if (new Date().getTime() > Number(proposal.duration + '000')) {
+      toast.warning('Proposal expired!')
+      return
+    }
+
+    voteOnProposal(id, choice).then((res) => {
+      if (!!!res.code) {
+        toast.success('Voted successfully!')
+        window.location.reload()
+      }
+    })
   }
 
   const daysRemaining = (days) => {
@@ -113,14 +117,15 @@ const ProposalDetails = () => {
           <Bar dataKey="Rejectees" fill="#dc2626" />
         </BarChart>
       </div>
-      {isStakeholder ? (
-        <div
-          className="flex flex-row justify-start items-center space-x-3 mt-4"
-          role="group"
-        >
-          <button
-            type="button"
-            className="inline-block px-6 py-2.5
+      <div
+        className="flex flex-row justify-start items-center space-x-3 mt-4"
+        role="group"
+      >
+        {isStakeholder ? (
+          <>
+            <button
+              type="button"
+              className="inline-block px-6 py-2.5
           bg-blue-600 text-white font-medium text-xs
             leading-tight uppercase rounded-full shadow-md
             hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
@@ -128,15 +133,15 @@ const ProposalDetails = () => {
             active:bg-blue-800 active:shadow-lg transition
             duration-150 ease-in-out dark:text-gray-300
             dark:border dark:border-gray-500 dark:bg-transparent"
-            data-mdb-ripple="true"
-            data-mdb-ripple-color="light"
-            onClick={() => onVote(true)}
-          >
-            Accept
-          </button>
-          <button
-            type="button"
-            className="inline-block px-6 py-2.5
+              data-mdb-ripple="true"
+              data-mdb-ripple-color="light"
+              onClick={() => onVote(true)}
+            >
+              Accept
+            </button>
+            <button
+              type="button"
+              className="inline-block px-6 py-2.5
           bg-blue-600 text-white font-medium text-xs
             leading-tight uppercase rounded-full shadow-md
             hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
@@ -144,18 +149,19 @@ const ProposalDetails = () => {
             active:bg-blue-800 active:shadow-lg transition
             duration-150 ease-in-out
             dark:border dark:border-gray-500 dark:bg-transparent"
-            data-mdb-ripple="true"
-            data-mdb-ripple-color="light"
-            onClick={() => onVote(false)}
-          >
-            Reject
-          </button>
-          {currentUser &&
-          currentUser.uid == connectedAccount.toLowerCase() &&
-          !!!group?.code ? (
-            <button
-              type="button"
-              className="inline-block px-6 py-2.5
+              data-mdb-ripple="true"
+              data-mdb-ripple-color="light"
+              onClick={() => onVote(false)}
+            >
+              Reject
+            </button>
+
+            {currentUser &&
+            currentUser.uid.toLowerCase() == proposal?.proposer.toLowerCase() &&
+            !group ? (
+              <button
+                type="button"
+                className="inline-block px-6 py-2.5
                 bg-blue-600 text-white font-medium text-xs
                 leading-tight uppercase rounded-full shadow-md
                 hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
@@ -163,36 +169,16 @@ const ProposalDetails = () => {
                 active:bg-blue-800 active:shadow-lg transition
                 duration-150 ease-in-out
                 dark:border dark:border-blue-500"
-              data-mdb-ripple="true"
-              data-mdb-ripple-color="light"
-              onClick={onEnterChat}
-            >
-              Chat
-            </button>
-          ) : null}
+                data-mdb-ripple="true"
+                data-mdb-ripple-color="light"
+                onClick={onCreateGroup}
+              >
+                Create Group
+              </button>
+            ) : null}
 
-          {proposal?.proposer.toLowerCase() == connectedAccount.toLowerCase() &&
-          !!group?.code ? (
-            <button
-              type="button"
-              className="inline-block px-6 py-2.5
-                bg-blue-600 text-white font-medium text-xs
-                leading-tight uppercase rounded-full shadow-md
-                hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-                focus:shadow-lg focus:outline-none focus:ring-0
-                active:bg-blue-800 active:shadow-lg transition
-                duration-150 ease-in-out
-                dark:border dark:border-blue-500"
-              data-mdb-ripple="true"
-              data-mdb-ripple-color="light"
-              onClick={onCreateGroup}
-            >
-              Create Group
-            </button>
-          ) : null}
-
-          {proposal?.proposer.toLowerCase() != connectedAccount.toLowerCase() &&
-            !!!group ? (
+            {proposal?.proposer.toLowerCase() !=
+              connectedAccount.toLowerCase() && !!!group ? (
               <button
                 type="button"
                 className="inline-block px-6 py-2.5 bg-blue-600
@@ -210,8 +196,28 @@ const ProposalDetails = () => {
                 Group N/A
               </button>
             ) : null}
-        </div>
-      ) : null}
+          </>
+        ) : null}
+
+        {currentUser && !!!group?.code ? (
+          <button
+            type="button"
+            className="inline-block px-6 py-2.5
+            bg-blue-600 text-white font-medium text-xs
+            leading-tight uppercase rounded-full shadow-md
+            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+            focus:shadow-lg focus:outline-none focus:ring-0
+            active:bg-blue-800 active:shadow-lg transition
+            duration-150 ease-in-out
+            dark:border dark:border-blue-500"
+            data-mdb-ripple="true"
+            data-mdb-ripple-color="light"
+            onClick={onEnterChat}
+          >
+            Chat
+          </button>
+        ) : null}
+      </div>
     </div>
   )
 }

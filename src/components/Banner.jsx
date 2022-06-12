@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { setGlobalState, useGlobalState } from '../store'
 import { performContribute } from '../Dominion'
+import { toast } from 'react-toastify'
 
 const Banner = () => {
   const [isStakeholder] = useGlobalState('isStakeholder')
@@ -18,8 +19,15 @@ const Banner = () => {
 
   const onContribute = () => {
     if (!!!amount || amount == '') return
-    performContribute(amount).then((res) => {
-      if (res) window.location.reload()
+    toast.info('Contribution in progress...')
+
+    performContribute(amount).then((bal) => {
+      if (!!!bal.message) {
+        setGlobalState('balance', Number(balance) + Number(bal))
+        setGlobalState('mybalance', Number(mybalance) + Number(bal))
+        setAmount('')
+        toast.success('Contribution received')
+      }
     })
   }
 
@@ -42,7 +50,7 @@ const Banner = () => {
       <p>
         {isStakeholder
           ? 'You can now raise proposals on this platform 😆'
-          : 'Hey, when you contribute upto 5 ethers you become a stakeholder 😎'}
+          : 'Hey, when you contribute upto 1 ether you become a stakeholder 😎'}
       </p>
       <div className="flex flex-row justify-start items-center md:w-1/3 w-full mt-4">
         <input

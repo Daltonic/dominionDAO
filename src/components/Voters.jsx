@@ -66,7 +66,7 @@ const Voters = () => {
       </div>
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-          <div className="overflow-hidden shadow-md rounded-md">
+          <div className="h-[calc(100vh_-_20rem)] overflow-y-auto  shadow-md rounded-md">
             <table className="min-w-full">
               <thead className="border-b dark:border-gray-500">
                 <tr>

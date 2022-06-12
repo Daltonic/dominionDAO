@@ -7,7 +7,9 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 contract DominionDAO is ReentrancyGuard, AccessControl {
     bytes32 private immutable CONTRIBUTOR_ROLE = keccak256("CONTRIBUTOR");
     bytes32 private immutable STAKEHOLDER_ROLE = keccak256("STAKEHOLDER");
+    uint256 immutable MIN_STAKEHOLDER_CONTRIBUTION = 1 ether;
     uint32 immutable MIN_VOTE_DURATION = 1 weeks;
+    // uint32 immutable MIN_VOTE_DURATION = 10 minutes;
     uint256 totalProposals;
     uint256 public daoBalance;
 
@@ -63,6 +65,7 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
         uint256 amount
     )external
      stakeholderOnly("Proposal Creation Allowed for Stakeholders only")
+     returns (ProposalStruct memory)
     {
         uint256 proposalId = totalProposals++;
         ProposalStruct storage proposal = raisedProposals[proposalId];
@@ -82,11 +85,14 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
             beneficiary,
             amount
         );
+
+        return proposal;
     }
 
     function performVote(uint256 proposalId, bool choosen)
         external
         stakeholderOnly("Unauthorized: Stakeholders only")
+        returns (VotedStruct memory)
     {
         ProposalStruct storage proposal = raisedProposals[proposalId];
 
@@ -112,6 +118,12 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
             proposal.beneficiary,
             proposal.amount
         );
+
+        return VotedStruct(
+                msg.sender,
+                block.timestamp,
+                choosen
+            );
     }
 
     function handleVoting(ProposalStruct storage proposal) private {
@@ -133,11 +145,11 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
     function payBeneficiary(uint256 proposalId)
         external
         stakeholderOnly("Unauthorized: Stakeholders only")
-        returns (bool)
+        nonReentrant()
+        returns (uint256)
     {
         ProposalStruct storage proposal = raisedProposals[proposalId];
         require(daoBalance >= proposal.amount, "Insufficient fund");
-        require(block.timestamp > proposal.duration, "Proposal still ongoing");
 
         if (proposal.paid) revert("Payment sent before");
 
@@ -158,16 +170,16 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
             proposal.amount
         );
 
-        return true;
+        return daoBalance;
     }
 
-    function contribute() payable external {
-
+    function contribute() payable external returns (uint256) {
+        require(msg.value > 0 ether, "Contributing zero is not allowed.");
         if (!hasRole(STAKEHOLDER_ROLE, msg.sender)) {
             uint256 totalContribution =
                 contributors[msg.sender] + msg.value;
 
-            if (totalContribution >= 5 ether) {
+            if (totalContribution >= MIN_STAKEHOLDER_CONTRIBUTION) {
                 stakeholders[msg.sender] = totalContribution;
                 contributors[msg.sender] += msg.value;
                 _setupRole(STAKEHOLDER_ROLE, msg.sender);
@@ -190,6 +202,8 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
             address(this),
             msg.value
         );
+
+        return daoBalance;
     }
 
     function getProposals()

@@ -20,13 +20,14 @@ const raiseProposal = async ({ title, description, beneficiary, amount }) => {
     const contract = getGlobalState('contract')
     const account = getGlobalState('connectedAccount')
 
-    await contract.methods
+    let proposal = await contract.methods
       .createProposal(title, description, beneficiary, amount)
       .send({ from: account })
 
-    return true
+    return proposal
   } catch (error) {
     console.log(error.message)
+    return error
   }
 }
 
@@ -36,11 +37,16 @@ const performContribute = async (amount) => {
     const contract = getGlobalState('contract')
     const account = getGlobalState('connectedAccount')
 
-    await contract.methods.contribute().send({ from: account, value: amount })
-
-    return true
+    let balance = await contract.methods
+      .contribute()
+      .send({ from: account, value: amount })
+    balance = window.web3.utils.fromWei(
+      balance.events.Action.returnValues.amount
+    )
+    return balance
   } catch (error) {
     console.log(error.message)
+    return error
   }
 }
 
@@ -68,6 +74,23 @@ const retrieveProposal = async (id) => {
   }
 }
 
+const reconstructProposal = (proposal) => {
+  return {
+    id: proposal.id,
+    amount: window.web3.utils.fromWei(proposal.amount),
+    title: proposal.title,
+    description: proposal.description,
+    paid: proposal.paid,
+    passed: proposal.passed,
+    proposer: proposal.proposer,
+    upvotes: Number(proposal.upvotes),
+    downvotes: Number(proposal.downvotes),
+    beneficiary: proposal.beneficiary,
+    executor: proposal.executor,
+    duration: proposal.duration,
+  }
+}
+
 const getProposal = async (id) => {
   try {
     const proposals = getGlobalState('proposals')
@@ -81,12 +104,13 @@ const voteOnProposal = async (proposalId, supported) => {
   try {
     const contract = getGlobalState('contract')
     const account = getGlobalState('connectedAccount')
-    await contract.methods
+    const vote = await contract.methods
       .performVote(proposalId, supported)
       .send({ from: account })
-    return true
+    return vote
   } catch (error) {
     console.log(error)
+    return error
   }
 }
 
@@ -104,8 +128,10 @@ const payoutBeneficiary = async (id) => {
   try {
     const contract = getGlobalState('contract')
     const account = getGlobalState('connectedAccount')
-    await contract.methods.payBeneficiary(id).send({ from: account })
-    return true
+    const balance = await contract.methods
+      .payBeneficiary(id)
+      .send({ from: account })
+    return balance
   } catch (error) {
     return error
   }
@@ -151,6 +177,7 @@ const loadWeb3 = async () => {
     return true
   } catch (error) {
     alert('Please connect your metamask wallet!')
+    console.log(error)
     return false
   }
 }
