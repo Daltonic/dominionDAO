@@ -117,7 +117,8 @@ const Proposals = () => {
                       {proposal.title.substring(0, 80) + '...'}
                     </td>
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                      {daysRemaining(proposal.duration)}
+                      {new Date().getTime() >
+                      Number(proposal.duration + '000') ? 'Expired' : daysRemaining(proposal.duration)}
                     </td>
                     <td
                       className="flex justify-start items-center space-x-3

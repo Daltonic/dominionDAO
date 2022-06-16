@@ -8,8 +8,8 @@ contract DominionDAO is ReentrancyGuard, AccessControl {
     bytes32 private immutable CONTRIBUTOR_ROLE = keccak256("CONTRIBUTOR");
     bytes32 private immutable STAKEHOLDER_ROLE = keccak256("STAKEHOLDER");
     uint256 immutable MIN_STAKEHOLDER_CONTRIBUTION = 1 ether;
-    uint32 immutable MIN_VOTE_DURATION = 1 weeks;
-    // uint32 immutable MIN_VOTE_DURATION = 10 minutes;
+    // uint32 immutable MIN_VOTE_DURATION = 1 weeks;
+    uint32 immutable MIN_VOTE_DURATION = 3 minutes;
     uint256 totalProposals;
     uint256 public daoBalance;
 
