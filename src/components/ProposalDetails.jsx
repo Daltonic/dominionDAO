@@ -126,13 +126,13 @@ const ProposalDetails = () => {
             <button
               type="button"
               className="inline-block px-6 py-2.5
-          bg-blue-600 text-white font-medium text-xs
-            leading-tight uppercase rounded-full shadow-md
-            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-            focus:shadow-lg focus:outline-none focus:ring-0
-            active:bg-blue-800 active:shadow-lg transition
-            duration-150 ease-in-out dark:text-gray-300
-            dark:border dark:border-gray-500 dark:bg-transparent"
+            bg-blue-600 text-white font-medium text-xs
+              leading-tight uppercase rounded-full shadow-md
+              hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+              focus:shadow-lg focus:outline-none focus:ring-0
+              active:bg-blue-800 active:shadow-lg transition
+              duration-150 ease-in-out dark:text-gray-300
+              dark:border dark:border-gray-500 dark:bg-transparent"
               data-mdb-ripple="true"
               data-mdb-ripple-color="light"
               onClick={() => onVote(true)}
@@ -142,13 +142,13 @@ const ProposalDetails = () => {
             <button
               type="button"
               className="inline-block px-6 py-2.5
-          bg-blue-600 text-white font-medium text-xs
-            leading-tight uppercase rounded-full shadow-md
-            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-            focus:shadow-lg focus:outline-none focus:ring-0
-            active:bg-blue-800 active:shadow-lg transition
-            duration-150 ease-in-out
-            dark:border dark:border-gray-500 dark:bg-transparent"
+            bg-blue-600 text-white font-medium text-xs
+              leading-tight uppercase rounded-full shadow-md
+              hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+              focus:shadow-lg focus:outline-none focus:ring-0
+              active:bg-blue-800 active:shadow-lg transition
+              duration-150 ease-in-out
+              dark:border dark:border-gray-500 dark:bg-transparent"
               data-mdb-ripple="true"
               data-mdb-ripple-color="light"
               onClick={() => onVote(false)}
@@ -176,30 +176,10 @@ const ProposalDetails = () => {
                 Create Group
               </button>
             ) : null}
-
-            {proposal?.proposer.toLowerCase() !=
-              connectedAccount.toLowerCase() && !!!group ? (
-              <button
-                type="button"
-                className="inline-block px-6 py-2.5 bg-blue-600
-                dark:bg-transparent text-white font-medium text-xs
-                leading-tight uppercase rounded-full shadow-md
-                hover:border-blue-700 hover:shadow-lg focus:border-blue-700
-                focus:shadow-lg focus:outline-none focus:ring-0
-                active:border-blue-800 active:shadow-lg transition
-                duration-150 ease-in-out dark:text-blue-500
-                dark:border dark:border-blue-500 disabled:bg-blue-300"
-                data-mdb-ripple="true"
-                data-mdb-ripple-color="light"
-                disabled
-              >
-                Group N/A
-              </button>
-            ) : null}
           </>
         ) : null}
 
-        {currentUser && !!!group?.code ? (
+        {currentUser && currentUser.uid.toLowerCase() == connectedAccount.toLowerCase() && !!!group?.code && group != null ? (
           <button
             type="button"
             className="inline-block px-6 py-2.5
@@ -215,6 +195,26 @@ const ProposalDetails = () => {
             onClick={onEnterChat}
           >
             Chat
+          </button>
+        ) : null}
+
+        {proposal?.proposer.toLowerCase() != connectedAccount.toLowerCase() &&
+        !!!group ? (
+          <button
+            type="button"
+            className="inline-block px-6 py-2.5 bg-blue-600
+            dark:bg-transparent text-white font-medium text-xs
+            leading-tight uppercase rounded-full shadow-md
+            hover:border-blue-700 hover:shadow-lg focus:border-blue-700
+            focus:shadow-lg focus:outline-none focus:ring-0
+            active:border-blue-800 active:shadow-lg transition
+            duration-150 ease-in-out dark:text-blue-500
+            dark:border dark:border-blue-500 disabled:bg-blue-300"
+            data-mdb-ripple="true"
+            data-mdb-ripple-color="light"
+            disabled
+          >
+            Group N/A
           </button>
         ) : null}
       </div>

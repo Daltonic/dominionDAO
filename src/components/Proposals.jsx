@@ -26,10 +26,12 @@ const Proposals = () => {
   const getAll = () => setProposals(data)
 
   const getOpened = () =>
-    setProposals(data.filter((proposal) => !proposal.passed))
+    setProposals(data.filter((proposal) => new Date().getTime() <
+    Number(proposal.duration + '000')))
 
   const getClosed = () =>
-    setProposals(data.filter((proposal) => proposal.passed))
+    setProposals(data.filter((proposal) =>new Date().getTime() >
+    Number(proposal.duration + '000')))
 
   const handlePayout = (id) => {
     payoutBeneficiary(id).then((res) => {
@@ -106,7 +108,7 @@ const Proposals = () => {
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                       <div className="flex flex-row justify-start items-center space-x-3">
                         <Identicon
-                          string={proposal.proposer}
+                          string={proposal.proposer.toLowerCase()}
                           size={25}
                           className="h-10 w-10 object-contain rounded-full mr-3"
                         />

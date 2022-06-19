@@ -31,7 +31,10 @@ const Banner = () => {
     })
   }
 
-  const opened = () => proposals.filter((proposal) => !proposal.passed).length
+  const opened = () =>
+    proposals.filter(
+      (proposal) => new Date().getTime() < Number(proposal.duration + '000')
+    ).length
 
   return (
     <div className="p-8">

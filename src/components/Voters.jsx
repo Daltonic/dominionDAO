@@ -99,7 +99,7 @@ const Voters = () => {
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                       <div className="flex flex-row justify-start items-center space-x-3">
                         <Identicon
-                          string={voter.voter}
+                          string={voter.voter.toLowerCase()}
                           size={25}
                           className="h-10 w-10 object-contain rounded-full mr-3"
                         />

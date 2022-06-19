@@ -10,8 +10,7 @@ const ChatLogin = () => {
   const handleSignUp = () => {
     signInWithCometChat(connectedAccount, connectedAccount).then((user) => {
       if (!!!user.code) {
-        toast.success('Account created, logging in...')
-        handleLogin()
+        toast.success('Account created, now click the login button.')
       } else {
         toast.error(user.message)
       }
