@@ -26,12 +26,18 @@ const Proposals = () => {
   const getAll = () => setProposals(data)
 
   const getOpened = () =>
-    setProposals(data.filter((proposal) => new Date().getTime() <
-    Number(proposal.duration + '000')))
+    setProposals(
+      data.filter(
+        (proposal) => new Date().getTime() < Number(proposal.duration + '000')
+      )
+    )
 
   const getClosed = () =>
-    setProposals(data.filter((proposal) =>new Date().getTime() >
-    Number(proposal.duration + '000')))
+    setProposals(
+      data.filter(
+        (proposal) => new Date().getTime() > Number(proposal.duration + '000')
+      )
+    )
 
   const handlePayout = (id) => {
     payoutBeneficiary(id).then((res) => {
@@ -119,8 +125,9 @@ const Proposals = () => {
                       {proposal.title.substring(0, 80) + '...'}
                     </td>
                     <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                      {new Date().getTime() >
-                      Number(proposal.duration + '000') ? 'Expired' : daysRemaining(proposal.duration)}
+                      {new Date().getTime() > Number(proposal.duration + '000')
+                        ? 'Expired'
+                        : daysRemaining(proposal.duration)}
                     </td>
                     <td
                       className="flex justify-start items-center space-x-3
@@ -139,27 +146,39 @@ const Proposals = () => {
 
                       {new Date().getTime() >
                       Number(proposal.duration + '000') ? (
-                        !proposal.paid ? (
-                          <button
-                            className="dark:border rounded-full px-6 py-2.5 dark:border-red-600
-                            dark:text-red-600 dark:bg-transparent font-medium text-xs leading-tight
-                            uppercase hover:border-red-700 focus:border-red-700
-                            focus:outline-none focus:ring-0 active:border-red-800
-                            transition duration-150 ease-in-out text-white bg-red-600"
-                            onClick={() => handlePayout(proposal.id)}
-                          >
-                            Payout
-                          </button>
+                        proposal.upvotes > proposal.downvotes ? (
+                          !proposal.paid ? (
+                            <button
+                              className="dark:border rounded-full px-6 py-2.5 dark:border-red-600
+                                dark:text-red-600 dark:bg-transparent font-medium text-xs leading-tight
+                                uppercase hover:border-red-700 focus:border-red-700
+                                focus:outline-none focus:ring-0 active:border-red-800
+                                transition duration-150 ease-in-out text-white bg-red-600"
+                              onClick={() => handlePayout(proposal.id)}
+                            >
+                              Payout
+                            </button>
+                          ) : (
+                            <button
+                              className="dark:border rounded-full px-6 py-2.5 dark:border-green-600
+                                  dark:text-green-600 dark:bg-transparent font-medium text-xs leading-tight
+                                  uppercase hover:border-green-700 focus:border-green-700
+                                  focus:outline-none focus:ring-0 active:border-green-800
+                                  transition duration-150 ease-in-out text-white bg-green-600"
+                            >
+                              Paid
+                            </button>
+                          )
                         ) : (
                           <button
-                            className="dark:border rounded-full px-6 py-2.5 dark:border-green-600
-                              dark:text-green-600 dark:bg-transparent font-medium text-xs leading-tight
-                              uppercase hover:border-green-700 focus:border-green-700
-                              focus:outline-none focus:ring-0 active:border-green-800
-                              transition duration-150 ease-in-out text-white bg-green-600"
-                          >
-                            Paid
-                          </button>
+                              className="dark:border rounded-full px-6 py-2.5 dark:border-red-600
+                                  dark:text-red-600 dark:bg-transparent font-medium text-xs leading-tight
+                                  uppercase hover:border-red-700 focus:border-red-700
+                                  focus:outline-none focus:ring-0 active:border-red-800
+                                  transition duration-150 ease-in-out text-white bg-red-600"
+                            >
+                              Rejected
+                            </button>
                         )
                       ) : null}
                     </td>
