@@ -178,7 +178,7 @@ const loadWeb3 = async () => {
   } catch (error) {
     alert('Please connect your metamask wallet!')
     console.log(error)
-    return false
+    return true
   }
 }
 
