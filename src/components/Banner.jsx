@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { setGlobalState, useGlobalState } from '../store'
-import { performContribute } from '../Dominion'
+import { useGlobalState, setGlobalState } from '../store'
 import { toast } from 'react-toastify'
+import { performContribute } from '../Blockchain.services'
 
 const Banner = () => {
   const [isStakeholder] = useGlobalState('isStakeholder')
   const [proposals] = useGlobalState('proposals')
-  const [connectedAccount] = useGlobalState('connectedAccount')
-  const [currentUser] = useGlobalState('currentUser')
   const [balance] = useGlobalState('balance')
   const [mybalance] = useGlobalState('mybalance')
   const [amount, setAmount] = useState('')
@@ -17,29 +15,21 @@ const Banner = () => {
     setGlobalState('createModal', 'scale-100')
   }
 
-  const onContribute = () => {
+  const onContribute = async () => {
     if (!!!amount || amount == '') return
-    toast.info('Contribution in progress...')
-
-    performContribute(amount).then((bal) => {
-      if (!!!bal.message) {
-        setGlobalState('balance', Number(balance) + Number(bal))
-        setGlobalState('mybalance', Number(mybalance) + Number(bal))
-        setAmount('')
-        toast.success('Contribution received')
-      }
-    })
+    await performContribute(amount)
+    toast.success('Contribution received')
   }
 
   const opened = () =>
     proposals.filter(
-      (proposal) => new Date().getTime() < Number(proposal.duration + '000')
+      (proposal) => new Date().getTime() < Number(proposal.duration + '000'),
     ).length
 
   return (
     <div className="p-8">
       <h2 className="font-semibold text-3xl mb-5">
-        {opened()} Proposal{opened() == 1 ? '' : 's'} Currenly Opened
+        {opened()} Proposal{opened() == 1 ? '' : 's'} Currently Opened
       </h2>
       <p>
         Current DAO Balance: <strong>{balance} Eth</strong> <br />
@@ -109,24 +99,6 @@ const Banner = () => {
             Propose
           </button>
         ) : null}
-        {currentUser &&
-        currentUser.uid == connectedAccount.toLowerCase() ? null : (
-          <button
-            type="button"
-            className={`inline-block px-6 py-2.5
-            bg-blue-600 text-white font-medium text-xs
-            leading-tight uppercase shadow-md rounded-full
-            hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
-            focus:shadow-lg focus:outline-none focus:ring-0
-            active:bg-blue-800 active:shadow-lg transition
-            duration-150 ease-in-out dark:border dark:border-blue-500`}
-            data-mdb-ripple="true"
-            data-mdb-ripple-color="light"
-            onClick={() => setGlobalState('loginModal', 'scale-100')}
-          >
-            Login Chat
-          </button>
-        )}
       </div>
     </div>
   )

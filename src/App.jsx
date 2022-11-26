@@ -1,29 +1,32 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { loadWeb3 } from './Dominion'
 import { ToastContainer } from 'react-toastify'
-import { isUserLoggedIn } from './CometChat'
+import 'react-toastify/dist/ReactToastify.min.css'
+import {
+  getInfo,
+  getProposals,
+  isWallectConnected,
+} from './Blockchain.services'
+import Header from './components/Header'
 import Home from './views/Home'
 import Proposal from './views/Proposal'
-import Chat from './views/Chat'
-import 'react-toastify/dist/ReactToastify.min.css'
 
 const App = () => {
   const [loaded, setLoaded] = useState(false)
-  useEffect(() => {
-    loadWeb3().then((res) => {
-      if (res) setLoaded(true)
-    })
-    isUserLoggedIn()
+  useEffect(async () => {
+    await isWallectConnected()
+     getInfo()
+     getProposals()
+    setLoaded(true)
   }, [])
 
   return (
     <div className="min-h-screen bg-white text-gray-900 dark:bg-[#212936] dark:text-gray-300">
+      <Header />
       {loaded ? (
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="proposal/:id" element={<Proposal />} />
-          <Route path="chat/:gid" element={<Chat />} />
+          <Route path="/proposal/:id" element={<Proposal />} />
         </Routes>
       ) : null}
 

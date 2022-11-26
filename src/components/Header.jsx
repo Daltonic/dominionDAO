@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
-import { FaUserSecret } from 'react-icons/fa'
-import { MdLightMode } from 'react-icons/md'
-import { FaMoon } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { connectWallet } from '../Dominion'
-import { useGlobalState, truncate } from '../store'
+import { MdLightMode } from 'react-icons/md'
+import { FaUserSecret, FaMoon } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
+import { truncate, useGlobalState } from '../store'
+import { connectWallet } from '../Blockchain.services'
 
 const Header = () => {
   const [theme, setTheme] = useState(localStorage.theme)
@@ -29,9 +28,12 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 dark:text-blue-500">
-      <nav className="navbar navbar-expand-lg shadow-md py-2 relative flex items-center w-full justify-between bg-white dark:bg-[#212936]">
+      <nav
+        className="navbar navbar-expand-lg shadow-md py-2 relative flex items-center w-full justify-between
+      bg-white dark:bg-[#212936]"
+      >
         <div className="px-6 w-full flex flex-wrap items-center justify-between">
-          <div className="navbar-collapse collapse grow flex flex-row justify-between items-center p-2">
+          <div className="grow flex flex-row justify-between items-center p-2">
             <Link
               to={'/'}
               className="flex flex-row justify-start items-center space-x-3"

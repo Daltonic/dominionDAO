@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { truncate } from '../store'
-import { listVoters } from '../Dominion'
+import { listVoters } from '../Blockchain.services'
 
 const Voters = () => {
   const [voters, setVoters] = useState([])
@@ -26,8 +26,8 @@ const Voters = () => {
   transition duration-150 ease-in-out overflow-hidden
   border border-blue-600`
 
-  useEffect(() => {
-    listVoters(id).then((res) => {
+  useEffect(async () => {
+    await listVoters(id).then((res) => {
       setVoters(res)
       setData(res)
     })

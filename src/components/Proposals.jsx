@@ -2,7 +2,7 @@ import Identicon from 'react-identicons'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { truncate, useGlobalState, daysRemaining } from '../store'
-import { payoutBeneficiary } from '../Dominion'
+import { payoutBeneficiary } from "../Blockchain.services";
 import { toast } from 'react-toastify'
 
 const Proposals = () => {
@@ -39,13 +39,9 @@ const Proposals = () => {
       )
     )
 
-  const handlePayout = (id) => {
-    payoutBeneficiary(id).then((res) => {
-      if (!!!res.code) {
-        toast.success('Beneficiary successfully Paid Out!')
-        window.location.reload()
-      }
-    })
+  const handlePayout = async (id) => {
+    await payoutBeneficiary(id)
+    toast.success("Beneficiary successfully Paid Out!");
   }
 
   return (
